@@ -29,17 +29,9 @@ def list_of_headers_load(df):
     return headers
 
 
-def add_feature_response_mail(d_emails, df):  # dice si el mail es respuesta de otro o no
-    response = []
-    for mail in df['text']:
-        msg = email.message_from_string(mail.encode('utf-8'))
-        if 're:' in msg['subject']:
-            response.append(True)
-        else:
-            response.append(False)
+def add_feature_response_mail(mails_tagged, df):  # dice si el mail es respuesta de otro o no
     if 're:' not in df.columns.values:
-        df['re:'] = map(lambda x: x is not None, mails_tagged['subject'])
-    return response
+        df['re:'] = map(lambda subject: True if (subject is None) else ('re:' not in subject), mails_tagged['Subject'])
 
 
 def features(d_emails):
@@ -49,8 +41,8 @@ def features(d_emails):
         df = pd.DataFrame(d_emails, columns=['class'])
     add_feature_len(d_emails, df)
     add_feature_count_spaces(d_emails, df)
-    add_feature_response_mail(d_emails, df)
     mails_tagged = tag_mails(d_emails)
+    add_feature_response_mail(mails_tagged, df)
     add_feature_email_tags(mails_tagged, df)
     add_feature_most_common_words_subject(mails_tagged, df)
     df.to_csv('trained/features.csv', index=False)

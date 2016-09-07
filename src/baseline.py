@@ -28,4 +28,6 @@ clf = DecisionTreeClassifier()
 # de 10 folds.
 res = cross_val_score(clf, X, y, cv=10)
 print np.mean(res), np.std(res)
-# salida: 0.687566666667 0.0190878702354  (o similar)
+# salida: 0.687566666667 0.0190878702354  : catedra
+# salida: 0.989361111111 0.00125339046363 : sin 're:'
+# salida: 0.989222222222 0.00135258098044 : con 're:'
