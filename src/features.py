@@ -5,7 +5,7 @@ import json
 import email
 import pandas as pd
 from sklearn.feature_extraction.text import CountVectorizer
-
+from collections import Counter
 
 def count_spaces(txt):  # cuenta la cantidad de espacios en el cuerpo del mail
     return txt.count(" ")
@@ -45,6 +45,7 @@ def features(d_emails):
     add_feature_response_mail(mails_tagged, df)
     add_feature_email_tags(mails_tagged, df)
     add_feature_most_common_words_subject(mails_tagged, df)
+    add_feature_char_count(d_emails, df)
     df.to_csv('trained/features.csv', index=False)
     return df
 
@@ -91,6 +92,10 @@ def add_feature_len(d_emails, df):
     if 'len' not in df.columns.values:
         df['len'] = map(len, d_emails['text'])
 
+def add_feature_char_count(d_mails, df):
+    if '{' not in df.columns.values:
+        char_counter(d_mails, df)
+
 
 def tag_mails(df_raw):
     try:
@@ -109,3 +114,27 @@ def tag_mails(df_raw):
             json.dump(mails_tagged, outfile)
     return mails_tagged
 
+def char_counter(df_raw, df):
+    """
+    cuenta aparicion de caracteres raros y 
+    devuelve un diccionario con llaves q son los caracteres
+    y cada llave tiene una lista de la longitud del indice del df con las cuentas
+    """
+    characters = set(r'!"#$%&\'()*+,-./:;?@[]^_`{|}~')
+    charac_count = {}
+    for character in characters:
+        charac_count[character] = []
+    
+    for i in df_raw.index:
+        msg = email.message_from_string(df_raw['text'][i])
+        if not msg.is_multipart():
+            body = msg.get_payload()
+            total_count = Counter(body)
+            for character in characters:
+                charac_count[character].append(total_count[character])
+        else:
+            for character in characters:
+                charac_count[character].append(0)
+
+    for character in characters:
+        df[character] = charac_count[character]
