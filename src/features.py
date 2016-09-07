@@ -31,7 +31,7 @@ def list_of_headers_load(df):
 
 def add_feature_response_mail(mails_tagged, df):  # dice si el mail es respuesta de otro o no
     if 're:' not in df.columns.values:
-        df['re:'] = map(lambda subject: True if (subject is None) else ('re:' not in subject), mails_tagged['Subject'])
+        df['re:'] = map(lambda subject: False if (subject is None) else ('re:' in subject), mails_tagged['Subject'])
 
 
 def features(d_emails):
