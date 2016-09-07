@@ -1,0 +1,8 @@
+.idea
+*.pyc
+src/dataset_json
+src/dataset_json_train
+src/dataset_json_test
+src/trained
+*Thumbs.db
+
