@@ -4,7 +4,6 @@
 import numpy as np
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.cross_validation import cross_val_score
-import pandas as pd
 from features import *
 
 ham_txt = json.load(open('dataset_json_train/ham_txt_train.json'))
@@ -12,7 +11,6 @@ spam_txt = json.load(open('dataset_json_train/spam_txt_train.json'))
 
 d_emails = pd.DataFrame(ham_txt + spam_txt, columns=['text'])
 d_emails['class'] = ['ham' for _ in range(len(ham_txt))]+['spam' for _ in range(len(spam_txt))]
-#list_of_headers_dump(df_raw)
 
 df = features(d_emails)
 
@@ -28,6 +26,7 @@ clf = DecisionTreeClassifier()
 # de 10 folds.
 res = cross_val_score(clf, X, y, cv=10)
 print np.mean(res), np.std(res)
-# salida: 0.687566666667 0.0190878702354  : catedra
+# salida: 0.694277777778 0.00518068587861  : catedra
 # salida: 0.989361111111 0.00125339046363 : sin 're:'
-# salida: 0.989222222222 0.00135258098044 : con 're:'
+# salida: 0.989083333333 0.000984446952593 : con 're:'
+# salida: 0.989569444444 0.00125838238806 : con subject most common words
