@@ -30,3 +30,4 @@ print np.mean(res), np.std(res)
 # salida: 0.989361111111 0.00125339046363 : sin 're:'
 # salida: 0.989083333333 0.000984446952593 : con 're:'
 # salida: 0.989569444444 0.00125838238806 : con subject most common words
+# salida: 0.991375 0.00110143354961 : con most common words y multipart

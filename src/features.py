@@ -38,21 +38,21 @@ def features(df_emails):
         df = pd.DataFrame(df_emails, columns=['class'])
     add_feature_len(df_emails, df, df_columns)
     add_feature_count_spaces(df_emails, df, df_columns)
+    add_feature_char_count(df_emails, df, df_columns)
     emails_by_headers = get_emails_by_headers(df_emails)
     add_feature_response_mail(emails_by_headers, df, df_columns)
     add_feature_email_headers(emails_by_headers, df, df_columns)
-    #add_feature_subject_most_common_words_spam(emails_by_headers, df, df_columns)
-    #add_feature_subject_most_common_words_ham(emails_by_headers, df, df_columns)
-    add_feature_char_count(emails_by_headers, df, df_columns)
-    df.to_csv('trained/features.csv', index=False, encoding='utf-8')
-    df = df.loc[:, df_columns]
+    add_feature_subject_most_common_words_spam(emails_by_headers, df, df_columns)
+    add_feature_subject_most_common_words_ham(emails_by_headers, df, df_columns)
+    #df.to_csv('trained/features.csv', index=False, encoding='utf-8')
+    #df = df.loc[:, df_columns]
     return df
 
 
 def add_feature_subject_most_common_words_spam(emails_by_headers, df, df_columns):
     word_frequencies_spam, word_frequencies_ham = get_subject_most_common_words(df, emails_by_headers)
-    most_common_words_spam = [w for (w, f) in word_frequencies_spam][:100]
-    most_common_words_ham = [w for (w, f) in word_frequencies_ham][:5000]
+    most_common_words_spam = [w for (w, f) in word_frequencies_spam][:300]
+    most_common_words_ham = [w for (w, f) in word_frequencies_ham][:3000]
     most_common_words = [w for w in most_common_words_spam if w not in most_common_words_ham]
 
     first_most_common_words = most_common_words[0]
@@ -65,14 +65,14 @@ def add_feature_subject_most_common_words_spam(emails_by_headers, df, df_columns
             word_frequencies_all = matrix_all.getcol(idx).toarray()[:, 0]
             word_key = u''.join((word, u'subject', u'spam'))
             df[word_key] = [int(freq > 0) for freq in word_frequencies_all]
-        df.to_csv('trained/features.csv', index=False, encoding='utf-8')
+        #df.to_csv('trained/features.csv', index=False, encoding='utf-8')
     df_columns += most_common_words
 
 
 def add_feature_subject_most_common_words_ham(emails_by_headers, df, df_columns):
     word_frequencies_spam, word_frequencies_ham = get_subject_most_common_words(df, emails_by_headers)
-    most_common_words_ham = [w for (w, f) in word_frequencies_ham][:100]
-    most_common_words_spam = [w for (w, f) in word_frequencies_spam][:5000]
+    most_common_words_ham = [w for (w, f) in word_frequencies_ham][:300]
+    most_common_words_spam = [w for (w, f) in word_frequencies_spam][:3000]
     most_common_words = [w for w in most_common_words_ham if w not in most_common_words_spam]
 
     first_most_common_words = most_common_words[0]
@@ -85,46 +85,43 @@ def add_feature_subject_most_common_words_ham(emails_by_headers, df, df_columns)
             word_frequencies_all = matrix_all.getcol(idx).toarray()[:, 0]
             word_key = word + '-subject' + '-ham'
             df[word_key] = [int(freq > 0) for freq in word_frequencies_all]
-        df.to_csv('trained/features.csv', index=False, encoding='utf-8')
+        #df.to_csv('trained/features.csv', index=False, encoding='utf-8')
     df_columns += most_common_words
 
 
 def add_feature_len(d_emails, df, df_columns):
     if 'len' not in df.columns.values:
         df['len'] = map(len, d_emails['text'])
-        df.to_csv('trained/features.csv', index=False, encoding='utf-8')
+        #df.to_csv('trained/features.csv', index=False, encoding='utf-8')
     df_columns.append('len')
 
 
 def add_feature_count_spaces(d_emails, df, df_columns):
     if 'count_spaces' not in df.columns.values:
         df['count_spaces'] = map(count_spaces, d_emails['text'])
-        df.to_csv('trained/features.csv', index=False, encoding='utf-8')
+        #df.to_csv('trained/features.csv', index=False, encoding='utf-8')
     df_columns.append('count_spaces')
 
 
 def add_feature_response_mail(emails_by_headers, df, df_columns):  # dice si el mail es respuesta de otro o no
     if 're:' not in df.columns.values:
         df['re:'] = map(lambda s: False if (s is None) else ('re:' in s), emails_by_headers['subject'])
-        df.to_csv('trained/features.csv', index=False, encoding='utf-8')
+        #df.to_csv('trained/features.csv', index=False, encoding='utf-8')
     df_columns.append('re:')
 
-def add_feature_char_count(d_mails, df):
-    if '{' not in df.columns.values:
-        char_counter(d_mails, df)
 
 def add_feature_email_headers(emails_by_headers, df, df_columns):
     first_email_header = unicode.encode(emails_by_headers.keys()[0])
     if first_email_header not in df.columns.values:
         for feature in emails_by_headers.keys():
             df[feature] = map(lambda x: x is not None, emails_by_headers[feature])
-        df.to_csv('trained/features.csv', index=False, encoding='utf-8')
+        #df.to_csv('trained/features.csv', index=False, encoding='utf-8')
     df_columns += emails_by_headers.keys()
 
 
-def add_feature_char_count(d_mails, df, df_columns):
+def add_feature_char_count(df_emails, df, df_columns):
     if '{' not in df.columns.values:
-        char_counter(d_mails, df, df_columns)
+        char_counter(df_emails, df, df_columns)
 
 
 def get_emails_by_headers(df_raw):
@@ -172,28 +169,33 @@ def get_subject_most_common_words(df, emails_by_headers):
     return word_frequencies_spam, word_frequencies_ham
 
 
-def char_counter(df_raw, df, df_columns):
+def char_counter(df_emails, df, df_columns):
     """
-    cuenta aparicion de caracteres raros y 
+    cuenta aparicion de caracteres raros y
     devuelve un diccionario con llaves q son los caracteres
     y cada llave tiene una lista de la longitud del indice del df con las cuentas
     """
     characters = set(r'!"#$%&\'()*+,-./:;?@[]^_`{|}~')
-    charac_count = {}
-    for character in characters:
-        charac_count[character] = []
-    
-    for i in df_raw.index:
-        msg = email.message_from_string(df_raw['text'][i])
-        if not msg.is_multipart():
-            body = msg.get_payload()
-            total_count = Counter(body)
-            for character in characters:
-                charac_count[character].append(total_count[character])
-        else:
-            for character in characters:
-                charac_count[character].append(0)
+    try:
+        charac_count = json.load(open('trained/charac_count.json'))
+    except (OSError, IOError):
+        charac_count = {}
+        for character in characters:
+            charac_count[character] = []
+
+        for mail in df_emails['text']:
+            msg = email.message_from_string(mail.encode('utf-8'))
+            if not msg.is_multipart():
+                body = msg.get_payload()
+                total_count = Counter(body)
+                for character in characters:
+                    charac_count[character].append(total_count[character])
+            else:
+                for character in characters:
+                    charac_count[character].append(0)
+        with open('trained/charac_count.json', 'w') as outfile:
+            json.dump(charac_count, outfile)
 
     for character in characters:
         df[character] = charac_count[character]
-    	df_columns += characters
+    df_columns += characters
