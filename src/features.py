@@ -43,7 +43,7 @@ def features(df_emails):
     add_feature_email_headers(emails_by_headers, df, df_columns)
     #add_feature_subject_most_common_words_spam(emails_by_headers, df, df_columns)
     #add_feature_subject_most_common_words_ham(emails_by_headers, df, df_columns)
-    add_feature_char_count(emails_by_headers, df)
+    add_feature_char_count(emails_by_headers, df, df_columns)
     df.to_csv('trained/features.csv', index=False, encoding='utf-8')
     df = df.loc[:, df_columns]
     return df
@@ -122,6 +122,11 @@ def add_feature_email_headers(emails_by_headers, df, df_columns):
     df_columns += emails_by_headers.keys()
 
 
+def add_feature_char_count(d_mails, df, df_columns):
+    if '{' not in df.columns.values:
+        char_counter(d_mails, df, df_columns)
+
+
 def get_emails_by_headers(df_raw):
     try:
         emails_by_headers = json.load(open('trained/emails_by_headers.json'))
@@ -138,31 +143,6 @@ def get_emails_by_headers(df_raw):
         with open('trained/emails_by_headers.json', 'w') as outfile:
             json.dump(emails_by_headers, outfile)
     return emails_by_headers
-
-def char_counter(df_raw, df):
-    """
-    cuenta aparicion de caracteres raros y 
-    devuelve un diccionario con llaves q son los caracteres
-    y cada llave tiene una lista de la longitud del indice del df con las cuentas
-    """
-    characters = set(r'!"#$%&\'()*+,-./:;?@[]^_`{|}~')
-    charac_count = {}
-    for character in characters:
-        charac_count[character] = []
-    
-    for i in df_raw.index:
-        msg = email.message_from_string(df_raw['text'][i])
-        if not msg.is_multipart():
-            body = msg.get_payload()
-            total_count = Counter(body)
-            for character in characters:
-                charac_count[character].append(total_count[character])
-        else:
-            for character in characters:
-                charac_count[character].append(0)
-
-    for character in characters:
-        df[character] = charac_count[character]
 
 
 def get_subject_most_common_words(df, emails_by_headers):
@@ -190,3 +170,30 @@ def get_subject_most_common_words(df, emails_by_headers):
         with open('trained/subject_most_common_words_ham.json', 'w') as outfile:
             json.dump(word_frequencies_ham, outfile)
     return word_frequencies_spam, word_frequencies_ham
+
+
+def char_counter(df_raw, df, df_columns):
+    """
+    cuenta aparicion de caracteres raros y 
+    devuelve un diccionario con llaves q son los caracteres
+    y cada llave tiene una lista de la longitud del indice del df con las cuentas
+    """
+    characters = set(r'!"#$%&\'()*+,-./:;?@[]^_`{|}~')
+    charac_count = {}
+    for character in characters:
+        charac_count[character] = []
+    
+    for i in df_raw.index:
+        msg = email.message_from_string(df_raw['text'][i])
+        if not msg.is_multipart():
+            body = msg.get_payload()
+            total_count = Counter(body)
+            for character in characters:
+                charac_count[character].append(total_count[character])
+        else:
+            for character in characters:
+                charac_count[character].append(0)
+
+    for character in characters:
+        df[character] = charac_count[character]
+    	df_columns += characters
