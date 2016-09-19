@@ -33,7 +33,7 @@ def list_of_headers_load(df):
 def features(df_emails):
     df_columns = ['class']
     try:
-        df = pd.read_csv('trained/features.csv', encoding='utf-8')
+        df = pd.read_csv('trained/features.pandas') # tal vez falta , encoding='utf-8'
     except IOError:
         df = pd.DataFrame(df_emails, columns=['class'])
     add_feature_len(df_emails, df, df_columns)
@@ -44,7 +44,7 @@ def features(df_emails):
     add_feature_email_headers(emails_by_headers, df, df_columns)
     add_feature_subject_most_common_words_spam(emails_by_headers, df, df_columns)
     add_feature_subject_most_common_words_ham(emails_by_headers, df, df_columns)
-    #df.to_csv('trained/features.csv', index=False, encoding='utf-8')
+    df.to_pandas('trained/features.pandas') # tal vez falta , encoding='utf-8'
     #df = df.loc[:, df_columns]
     return df
 
@@ -91,30 +91,30 @@ def add_feature_subject_most_common_words_ham(emails_by_headers, df, df_columns)
 
 def add_feature_len(d_emails, df, df_columns):
     if 'len' not in df.columns.values:
-        df['len'] = map(len, d_emails['text'])
+        df['len'] = list(map(len, d_emails['text']))
         #df.to_csv('trained/features.csv', index=False, encoding='utf-8')
     df_columns.append('len')
 
 
 def add_feature_count_spaces(d_emails, df, df_columns):
     if 'count_spaces' not in df.columns.values:
-        df['count_spaces'] = map(count_spaces, d_emails['text'])
+        df['count_spaces'] = list(map(count_spaces, d_emails['text']))
         #df.to_csv('trained/features.csv', index=False, encoding='utf-8')
     df_columns.append('count_spaces')
 
 
 def add_feature_response_mail(emails_by_headers, df, df_columns):  # dice si el mail es respuesta de otro o no
     if 're:' not in df.columns.values:
-        df['re:'] = map(lambda s: False if (s is None) else ('re:' in s), emails_by_headers['subject'])
+        df['re:'] = list(map(lambda s: False if (s is None) else ('re:' in s), emails_by_headers['subject']))
         #df.to_csv('trained/features.csv', index=False, encoding='utf-8')
     df_columns.append('re:')
 
 
 def add_feature_email_headers(emails_by_headers, df, df_columns):
-    first_email_header = unicode.encode(emails_by_headers.keys()[0])
+    first_email_header = unicode.encode(emails_by_headers.keys()[0]) # el indice [0] de esta linea tampoco me funcionaba
     if first_email_header not in df.columns.values:
         for feature in emails_by_headers.keys():
-            df[feature] = map(lambda x: x is not None, emails_by_headers[feature])
+            df[feature] = list(map(lambda x: x is not None, emails_by_headers[feature]))
         #df.to_csv('trained/features.csv', index=False, encoding='utf-8')
     df_columns += emails_by_headers.keys()
 
@@ -153,7 +153,7 @@ def get_subject_most_common_words(df, emails_by_headers):
         email_subjects_spam = [s for (s, c) in email_subjects_by_class if (c == 'spam')]
         matrix_spam = counter_vector.fit_transform(email_subjects_spam)
         word_frequencies_spam = [(word, matrix_spam.getcol(idx).count_nonzero()) for word, idx in
-                                 list(counter_vector.vocabulary_.items())]
+                                 list(counter_vector.vocabulary_.items())] # Esta linea necesita la ultima version de scikit-learn
         word_frequencies_spam = sorted(word_frequencies_spam, key=lambda x: -x[1])
 
         email_subjects_ham = [s for (s, c) in email_subjects_by_class if (c == 'ham')]
