@@ -2,9 +2,9 @@
 # Segundo cuatrimestre 2016
 
 import numpy as np
-from sklearn.tree import DecisionTreeClassifier
 from sklearn.cross_validation import cross_val_score
 from features import *
+#from algorithm import *
 
 ham_txt = json.load(open('dataset_json_train/ham_txt_train.json'))
 spam_txt = json.load(open('dataset_json_train/spam_txt_train.json'))
@@ -20,7 +20,7 @@ X = df.iloc[:, 1:].values
 y = df['class']
 
 # Elijo mi clasificador.
-clf = DecisionTreeClassifier()
+clf = DecisionTree()
 
 # Ejecuto el clasificador entrenando con un esquema de cross validation
 # de 10 folds.
