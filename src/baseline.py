@@ -2,7 +2,6 @@
 # Segundo cuatrimestre 2016
 
 import numpy as np
-from sklearn.tree import DecisionTreeClassifier
 from sklearn.cross_validation import cross_val_score
 from features import *
 from algorithm import *
