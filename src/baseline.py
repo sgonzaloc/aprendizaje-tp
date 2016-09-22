@@ -12,20 +12,22 @@ spam_txt = json.load(open('dataset_json_train/spam_txt_train.json'))
 d_emails = pd.DataFrame(ham_txt + spam_txt, columns=['text'])
 d_emails['class'] = ['ham' for _ in range(len(ham_txt))]+['spam' for _ in range(len(spam_txt))]
 
+# Calculamos los features
 df = features(d_emails)
 
-# Preparo data para clasificar
-#X = df[['len', 'count_spaces']].values
+# Preparamos data para clasificar
 X = df.iloc[:, 1:].values
-y = df['class']
+Y = df['class']
 
-# Elijo mi clasificador.
-clf = DecisionTree()
+# Hacemos cross validation
+res = cross_validation(X, Y, 'none', 'none', 'SVM', 'none')
+
 
 # Ejecuto el clasificador entrenando con un esquema de cross validation
 # de 10 folds.
-res = cross_val_score(clf, X, y, cv=10)
-print np.mean(res), np.std(res)
+#res = cross_val_score(clf, X, y, cv=10)
+#print np.mean(res), np.std(res)
+#print res 
 # salida: 0.694277777778 0.00518068587861  : catedra
 # salida: 0.989361111111 0.00125339046363 : sin 're:'
 # salida: 0.989083333333 0.000984446952593 : con 're:'
