@@ -2,6 +2,8 @@
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.svm import SVC
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.naive_bayes import BernoulliNB
 from sklearn.decomposition import PCA
 
 
@@ -21,6 +23,11 @@ def DecisionTree():
 def SVM():
     return SVC(kernel='rbf')
 
+def RandomTrees(n_trees, max_features='sqrt', max_depth=None, min_samples_split=1):
+    return RandomForestClassifier(n_estimators=n_trees, max_features=max_features, max_depth=max_depth, min_samples_split=min_samples_split)
+
+def NaiveBayes():
+    return BernoulliNB()
 
 ############################################################
 #####           Reducción de dimensionalidad           #####
