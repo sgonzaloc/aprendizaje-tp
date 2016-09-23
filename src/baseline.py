@@ -6,21 +6,16 @@ from sklearn.cross_validation import cross_val_score
 from features import *
 from algorithm import *
 
-ham_txt = json.load(open('dataset_json_train/ham_txt_train.json'))
-spam_txt = json.load(open('dataset_json_train/spam_txt_train.json'))
-
-d_emails = pd.DataFrame(ham_txt + spam_txt, columns=['text'])
-d_emails['class'] = ['ham' for _ in range(len(ham_txt))]+['spam' for _ in range(len(spam_txt))]
-
 # Calculamos los features
-df = features(d_emails)
+df = features()
+df = df.iloc[:4, :]
 
 # Preparamos data para clasificar
 X = df.iloc[:, 1:].values
 Y = df['class']
-
+print df
 # Hacemos cross validation
-res = cross_validation(X, Y, 'none', 'none', 'SVM', 'none')
+#res = cross_validation(X, Y, 'none', 'none', 'SVM', 'none')
 
 
 # Ejecuto el clasificador entrenando con un esquema de cross validation

@@ -35,11 +35,11 @@ def features():
     try:
         df = pd.read_pickle('trained/features.pandas') # tal vez falta , encoding='utf-8'
     except IOError:
-	ham_txt = json.load(open('dataset_json_train/ham_txt_train.json'))
-	spam_txt = json.load(open('dataset_json_train/spam_txt_train.json'))
+    	ham_txt = json.load(open('dataset_json_train/ham_txt_train.json'))
+    	spam_txt = json.load(open('dataset_json_train/spam_txt_train.json'))
 
-	df_emails = pd.DataFrame(ham_txt + spam_txt, columns=['text'])
-	df_emails['class'] = ['ham' for _ in range(len(ham_txt))]+['spam' for _ in range(len(spam_txt))]
+    	df_emails = pd.DataFrame(ham_txt + spam_txt, columns=['text'])
+    	df_emails['class'] = ['ham' for _ in range(len(ham_txt))]+['spam' for _ in range(len(spam_txt))]
         df = pd.DataFrame(df_emails, columns=['class'])
         add_feature_len(df_emails, df, df_columns)
         add_feature_count_spaces(df_emails, df, df_columns)
