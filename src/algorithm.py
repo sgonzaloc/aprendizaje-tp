@@ -16,8 +16,8 @@ import numpy as np
 def KNeighbors(n_neighbors):
     return KNeighborsClassifier(n_neighbors=n_neighbors, algorithm='ball_tree')
 
-def DecisionTree():
-	return DecisionTreeClassifier()
+def DecisionTree(max_depth):
+	return DecisionTreeClassifier(max_depth=max_depth)
 	
 def SVM():
     return SVC(kernel='rbf')
@@ -50,7 +50,7 @@ def PLS_DA(components, X, Y):
 #devuelve una lista de tuplas (x_train, x_test, y_train, y_test)
 def kFold(fold, X, Y):
 	folds = StratifiedKFold(Y, n_folds=fold)
-	return [(X[train_index], X[test_index], Y[train_index], Y[test_index]) for train_index, test_index in skf]
+	return [(X[train_index], X[test_index], Y[train_index], Y[test_index]) for train_index, test_index in folds]
 
 # Toma el x, el y, el nombre de la funcion a utilizar para reducir (o 'none'), la cantidad de dimensiones finales (o 'none')
 # el nombre de la funcion a utilizar para clasificar y el parametro que utiliza la funcion (o 'none')
@@ -70,7 +70,7 @@ def cross_validation(X, Y, reduction, components, classifier, parameter):
 		if classifier == 'KNeighbors':
 			clf = KNeighbors(parameter)
 		elif classifier == 'DecisionTree':
-			clf = DecisionTree()
+			clf = DecisionTree(parameter)
 		elif classifier == 'SVM':
 			clf = SVM()
 		elif classifier == 'RandomTrees':
