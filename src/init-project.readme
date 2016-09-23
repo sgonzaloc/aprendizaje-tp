@@ -1,0 +1,16 @@
+sudo pip install virtualenv
+sudo pip install virtualenvwrapper
+#sudo pip install --upgrade yolk3k
+export WORKON_HOME=~/Envs
+source /usr/local/bin/virtualenvwrapper.sh
+mkvirtualenv aprendizaje-automatico-env
+virtualenv -p /usr/bin/python2.7 aprendizaje-automatico-env
+workon aprendizaje-automatico-env
+pip install -r requirements.txt
+#yolk es para buscar todas las versiones de un paquete no instalado todavia
+#yolk -V numpy
+#pip list es para buscar todos los pquetes instalados
+pip list
+#time es para calcular el tiempo que tarda un programa en ejecutarse
+/usr/bin/time -p -o results.out -a python baseline.py >> results.out
+#time python baseline.py >> results.out

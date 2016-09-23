@@ -5,4 +5,5 @@ src/dataset_json_train
 src/dataset_json_test
 src/trained
 *Thumbs.db
-
+src/aprendizaje-automatico-env
+*.out

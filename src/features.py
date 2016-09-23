@@ -36,16 +36,16 @@ def features(df_emails):
         df = pd.read_pickle('trained/features.pandas') # tal vez falta , encoding='utf-8'
     except IOError:
         df = pd.DataFrame(df_emails, columns=['class'])
-    add_feature_len(df_emails, df, df_columns)
-    add_feature_count_spaces(df_emails, df, df_columns)
-    add_feature_char_count(df_emails, df, df_columns)
-    emails_by_headers = get_emails_by_headers(df_emails)
-    add_feature_response_mail(emails_by_headers, df, df_columns)
-    add_feature_email_headers(emails_by_headers, df, df_columns)
-    add_feature_subject_most_common_words_spam(emails_by_headers, df, df_columns)
-    add_feature_subject_most_common_words_ham(emails_by_headers, df, df_columns)
-    df.to_pickle('trained/features.pandas') # tal vez falta , encoding='utf-8'
-    #df = df.loc[:, df_columns]
+        add_feature_len(df_emails, df, df_columns)
+        add_feature_count_spaces(df_emails, df, df_columns)
+        add_feature_char_count(df_emails, df, df_columns)
+        emails_by_headers = get_emails_by_headers(df_emails)
+        add_feature_response_mail(emails_by_headers, df, df_columns)
+        add_feature_email_headers(emails_by_headers, df, df_columns)
+        add_feature_subject_most_common_words_spam(emails_by_headers, df, df_columns)
+        add_feature_subject_most_common_words_ham(emails_by_headers, df, df_columns)
+        df.to_pickle('trained/features.pandas') # tal vez falta , encoding='utf-8'
+        #df = df.loc[:, df_columns]
     return df
 
 
