@@ -10,6 +10,7 @@ from sklearn.metrics import make_scorer
 from sklearn.grid_search import GridSearchCV, RandomizedSearchCV
 from sklearn.metrics import classification_report
 from scipy.stats import randint as sp_randint
+from random import shuffle
 
 ham_txt = json.load(open('dataset_json_train/ham_txt_train.json'))
 spam_txt = json.load(open('dataset_json_train/spam_txt_train.json'))
@@ -46,30 +47,40 @@ y = df['class']
 #                       scoring='accuracy')
 
 
-def evaluarRandomizedSearch(n_min, n_max, n_iter):
-	# run randomized search
-	for i in xrange(1,n_iter):
-		param_dist = {"n_neighbors": sp_randint(n_min, n_max)}
-		search = RandomizedSearchCV(KNeighborsClassifier(algorithm='ball_tree', n_jobs=3), param_distributions=param_dist, n_iter=5, n_jobs=3)
+def evaluarRandomizedSearch(n_min, n_max):
+	n_neighbors_range = range(n_min, n_max)
+	shuffle(n_neighbors_range)
+	n_neighbors_to_process = n_neighbors_range
+	n_max_ant = -1
+	n_min_ant = -1
+	while not n_neighbors_to_process:
+		param_dist = {"n_neighbors": n_neighbors_to_process[:8]}
+		searchs = GridSearchCV(KNeighborsClassifier(algorithm='ball_tree', n_jobs=3), param_distributions=param_dist, n_jobs=3, scoring='accuracy')
 		search.fit(X, y)
-		best_params_st_searchs = sorted(search.grid_scores_, key = lambda x : x[1]/(x[2]*2), reverse = True)[:2]
-		n_neighbors = [params['n_neighbors'] for (params, mean_score, scores) in best_searchs]
-		n_min = n_neighbors[0]
-		n_max = n_neighbors[1]
-		if n_min == n_max:
+		n_neighbors = [params['n_neighbors'] for (params, mean_score, scores) in search.grid_scores_]
+		n_neighbors_to_process = [n for n in n_neighbors_to_process if n not in n_neighbors][:8]
+		scores = scores_ant + searchs
+		scores_sorted = sorted(scores, key = lambda x : x[1]/(x[2]*2), reverse = True)
+		best_scores = scores_sorted[:4]
+		n_max = n_neighbors[0]
+		n_min = n_neighbors[3]
+		if (n_max == n_max_ant) and (n_min == n_min_ant):
 			break
-		print "iteracion: ", i
+		n_max_ant = n_max
+		n_min_ant = n_min
+		scores_ant = search.grid_scores_
+		print "iteracion: ", n_neighbors_to_process
 	print "n_min: ", n_min
 	print "n_max: ", n_max
 
 	print("Best parameters set found on development set:")
 	print()
-	print(best_searchs.best_params_)
+	print(searchs.best_params_)
 	print()
 	print("Grid scores on development set:")
 	print()
-	for params, mean_score, scores in best_searchs.grid_scores_:
+	for params, mean_score, scores in searchs.grid_scores_:
 	    print("%0.3f (+/-%0.03f) for %r"% (mean_score, scores.std()*2, mean_score/(scores.std()*2), params))
 	print()
 
-evaluarRandomizedSearch(1, 50, 5)
+evaluarRandomizedSearch(1, 50)
