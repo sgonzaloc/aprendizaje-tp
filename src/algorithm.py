@@ -8,6 +8,7 @@ from sklearn.decomposition import PCA
 from sklearn.cross_decomposition import PLSRegression
 from sklearn.cross_validation import StratifiedKFold
 import numpy as np
+from sklearn.metrics import confusion_matrix
 
 ############################################################
 #####                  Clasificadores                  #####
@@ -50,13 +51,13 @@ def PLS_DA(components, X, Y):
 #devuelve una lista de tuplas (x_train, x_test, y_train, y_test)
 def kFold(fold, X, Y):
 	folds = StratifiedKFold(Y, n_folds=fold)
-	return [(X[train_index], X[test_index], Y[train_index], Y[test_index]) for train_index, test_index in skf]
+	return [(X[train_index], X[test_index], Y[train_index], Y[test_index]) for train_index, test_index in folds]
 
 # Toma el x, el y, el nombre de la funcion a utilizar para reducir (o 'none'), la cantidad de dimensiones finales (o 'none')
 # el nombre de la funcion a utilizar para clasificar y el parametro que utiliza la funcion (o 'none')
 def cross_validation(X, Y, reduction, components, classifier, parameter): 
 	folds = kFold(5, X, Y)
-	
+
 	result = []
 
 	for (x_train, x_test, y_train, y_test) in folds:
@@ -81,7 +82,10 @@ def cross_validation(X, Y, reduction, components, classifier, parameter):
 		# Entreno el clasificador
 		clf = clf.fit(x_train, y_train) 
 
+		y_pred = clf.predict(x_test)
+		m = confusion_matrix(y_test.values, y_pred, labels=["ham", "spam"])
+		print m
 		# Verifico que tan bien predijo  
-    	result.append([i==j for i, j in zip((clf.predict(x_test)), y_test)])
+		#result.append([i==j for i, j in zip(y_pred, y_test)])
 
 	return result

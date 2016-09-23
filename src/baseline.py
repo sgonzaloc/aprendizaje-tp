@@ -8,12 +8,12 @@ from algorithm import *
 
 # Calculamos los features
 df = features()
-#df = df.iloc[:4, :]
+df = pd.concat([df.iloc[:15, :], df.iloc[71985:, :]], ignore_index=True)
 
 # Preparamos data para clasificar
 X = df.iloc[:, 1:].values
 Y = df['class']
-#print df
+# print df
 # Hacemos cross validation
 res = cross_validation(X, Y, 'none', 'none', 'SVM', 'none')
 
