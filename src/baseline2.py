@@ -12,12 +12,7 @@ from sklearn.metrics import classification_report
 from scipy.stats import randint as sp_randint
 from random import shuffle
 
-ham_txt = json.load(open('dataset_json_train/ham_txt_train.json'))
-spam_txt = json.load(open('dataset_json_train/spam_txt_train.json'))
-
-d_emails = pd.DataFrame(ham_txt + spam_txt, columns=['text'])
-d_emails['class'] = ['ham' for _ in range(len(ham_txt))]+['spam' for _ in range(len(spam_txt))]
-df = features(d_emails)
+df = features()
 
 # Preparo data para clasificar
 #X = df[['len', 'count_spaces']].values
