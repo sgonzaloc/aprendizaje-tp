@@ -43,18 +43,20 @@ y = df['class']
 
 
 def evaluarRandomizedSearch(n_min, n_max):
-	n_neighbors_range = range(n_min, n_max)
-	shuffle(n_neighbors_range)
-	n_neighbors_to_process = n_neighbors_range
 	n_max_ant = -1
 	n_min_ant = -1
-	while not n_neighbors_to_process:
-		param_dist = {"n_neighbors": n_neighbors_to_process[:8]}
-		searchs = GridSearchCV(KNeighborsClassifier(algorithm='ball_tree', n_jobs=3), param_distributions=param_dist, n_jobs=3, scoring='accuracy')
-		search.fit(X, y)
-		n_neighbors = [params['n_neighbors'] for (params, mean_score, scores) in search.grid_scores_]
-		n_neighbors_to_process = [n for n in n_neighbors_to_process if n not in n_neighbors][:8]
-		scores = scores_ant + searchs
+	scores_ant = []
+	n_neighbors_range = range(n_min, n_max)
+	n_neighbors_processed = []
+	while len(n_neighbors_range) > 0:
+		shuffle(n_neighbors_range)
+		n_neighbors_to_process = n_neighbors_range[:8]
+		param_dist = {"n_neighbors": n_neighbors_to_process}
+		searchs = GridSearchCV(KNeighborsClassifier(algorithm='ball_tree', n_jobs=2), param_dist, n_jobs=2, scoring='accuracy')
+		searchs.fit(X, y)
+		scores = scores_ant + [s for s in searchs.grid_scores_]   
+		n_neighbors = [params['n_neighbors'] for (params, mean_score, scores) in scores]
+		n_neighbors_processed +=  n_neighbors 
 		scores_sorted = sorted(scores, key = lambda x : x[1]/(x[2]*2), reverse = True)
 		best_scores = scores_sorted[:4]
 		n_max = n_neighbors[0]
@@ -63,19 +65,24 @@ def evaluarRandomizedSearch(n_min, n_max):
 			break
 		n_max_ant = n_max
 		n_min_ant = n_min
-		scores_ant = search.grid_scores_
-		print "iteracion: ", n_neighbors_to_process
+		scores_ant = best_scores
+		n_neighbors_range = range(n_min, n_max)
+		n_neighbors_range = [n for n in n_neighbors_range if n not in n_neighbors_processed]
+		print "n_neighbors_range: ", n_neighbors_range
+		print "n_max: ", n_max
+		print "n_min: ", n_min
+		print "best_scores: ", best_scores
 	print "n_min: ", n_min
 	print "n_max: ", n_max
 
 	print("Best parameters set found on development set:")
 	print()
-	print(searchs.best_params_)
+	print(best_scores[0][2])
 	print()
 	print("Grid scores on development set:")
 	print()
-	for params, mean_score, scores in searchs.grid_scores_:
+	for params, mean_score, scores in best_scores:
 	    print("%0.3f (+/-%0.03f) for %r"% (mean_score, scores.std()*2, mean_score/(scores.std()*2), params))
 	print()
 
-evaluarRandomizedSearch(1, 50)
+evaluarRandomizedSearch(1, 20)
