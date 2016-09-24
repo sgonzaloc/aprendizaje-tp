@@ -1,0 +1,157 @@
+knn
+k: 1
+confusion_matrix:  [[3180  420]
+ [ 333 3267]]
+confusion_matrix:  [[3167  433]
+ [ 314 3286]]
+confusion_matrix:  [[3193  407]
+ [ 333 3267]]
+confusion_matrix:  [[3160  440]
+ [ 321 3279]]
+confusion_matrix:  [[3184  416]
+ [ 298 3302]]
+confusion_matrix:  [[3184  416]
+ [ 343 3257]]
+confusion_matrix:  [[3191  409]
+ [ 353 3247]]
+confusion_matrix:  [[3160  440]
+ [ 310 3290]]
+confusion_matrix:  [[3215  385]
+ [ 353 3247]]
+confusion_matrix:  [[3158  442]
+ [ 349 3251]]
+tiempo de KNeighbors : 49.24337513
+accuracy_score : 0.895625 0.00262145669161
+f1_score : 0.89691254 0.00264731329699
+precision : 0.88598988 0.00395489440006
+recall_score : 0.90813888 0.00509334711321
+k: 3
+confusion_matrix:  [[3153  447]
+ [ 364 3236]]
+confusion_matrix:  [[3126  474]
+ [ 360 3240]]
+confusion_matrix:  [[3165  435]
+ [ 397 3203]]
+confusion_matrix:  [[3159  441]
+ [ 359 3241]]
+confusion_matrix:  [[3134  466]
+ [ 325 3275]]
+confusion_matrix:  [[3127  473]
+ [ 378 3222]]
+confusion_matrix:  [[3168  432]
+ [ 366 3234]]
+confusion_matrix:  [[3121  479]
+ [ 349 3251]]
+confusion_matrix:  [[3151  449]
+ [ 387 3213]]
+confusion_matrix:  [[3137  463]
+ [ 389 3211]]
+tiempo de KNeighbors : 42.40884927
+accuracy_score : 0.88565279 0.00289412118594
+f1_score : 0.88703656 0.0029989642276
+precision : 0.87641978 0.00368357761444
+recall_score : 0.89794444 0.0056344481913
+k: 5
+confusion_matrix:  [[3135  465]
+ [ 412 3188]]
+confusion_matrix:  [[3124  476]
+ [ 401 3199]]
+confusion_matrix:  [[3134  466]
+ [ 447 3153]]
+confusion_matrix:  [[3129  471]
+ [ 385 3215]]
+confusion_matrix:  [[3105  495]
+ [ 356 3244]]
+confusion_matrix:  [[3094  506]
+ [ 413 3187]]
+confusion_matrix:  [[3118  482]
+ [ 402 3198]]
+confusion_matrix:  [[3106  494]
+ [ 377 3223]]
+confusion_matrix:  [[3128  472]
+ [ 438 3162]]
+confusion_matrix:  [[3090  510]
+ [ 409 3191]]
+tiempo de KNeighbors : 45.05508363
+accuracy_score : 0.87670832 0.00339359266465
+f1_score : 0.87804756 0.0036709365593
+precision : 0.86856674 0.00344441018876
+recall_score : 0.88777778 0.00712651322468
+k: 7
+confusion_matrix:  [[3105  495]
+ [ 422 3178]]
+confusion_matrix:  [[3097  503]
+ [ 433 3167]]
+confusion_matrix:  [[3113  487]
+ [ 453 3147]]
+confusion_matrix:  [[3100  500]
+ [ 418 3182]]
+confusion_matrix:  [[3063  537]
+ [ 392 3208]]
+confusion_matrix:  [[3084  516]
+ [ 447 3153]]
+confusion_matrix:  [[3101  499]
+ [ 424 3176]]
+confusion_matrix:  [[3075  525]
+ [ 429 3171]]
+confusion_matrix:  [[3080  520]
+ [ 464 3136]]
+confusion_matrix:  [[3083  517]
+ [ 443 3157]]
+tiempo de KNeighbors : 50.09535046
+accuracy_score : 0.86911111 0.00292736865169
+f1_score : 0.87049834 0.00306940067414
+precision : 0.86135604 0.00332508526664
+recall_score : 0.8798611 0.00539954696322
+k: 9
+confusion_matrix:  [[3090  510]
+ [ 455 3145]]
+confusion_matrix:  [[3084  516]
+ [ 450 3150]]
+confusion_matrix:  [[3096  504]
+ [ 476 3124]]
+confusion_matrix:  [[3069  531]
+ [ 433 3167]]
+confusion_matrix:  [[3047  553]
+ [ 411 3189]]
+confusion_matrix:  [[3057  543]
+ [ 467 3133]]
+confusion_matrix:  [[3087  513]
+ [ 439 3161]]
+confusion_matrix:  [[3080  520]
+ [ 423 3177]]
+confusion_matrix:  [[3074  526]
+ [ 478 3122]]
+confusion_matrix:  [[3054  546]
+ [ 481 3119]]
+tiempo de KNeighbors : 43.86194117
+accuracy_score : 0.86423611 0.00359733116531
+f1_score : 0.86562616 0.00380045691495
+precision : 0.8568255 0.00364475870806
+recall_score : 0.87463889 0.00644186194907
+k: 11
+confusion_matrix:  [[3061  539]
+ [ 474 3126]]
+confusion_matrix:  [[3063  537]
+ [ 462 3138]]
+confusion_matrix:  [[3097  503]
+ [ 478 3122]]
+confusion_matrix:  [[3048  552]
+ [ 437 3163]]
+confusion_matrix:  [[3031  569]
+ [ 434 3166]]
+confusion_matrix:  [[3049  551]
+ [ 485 3115]]
+confusion_matrix:  [[3071  529]
+ [ 458 3142]]
+confusion_matrix:  [[3073  527]
+ [ 456 3144]]
+confusion_matrix:  [[3037  563]
+ [ 492 3108]]
+confusion_matrix:  [[3037  563]
+ [ 494 3106]]
+tiempo de KNeighbors : 47.21443082
+accuracy_score : 0.85968055 0.0038359863405
+f1_score : 0.86114928 0.0038586554225
+precision : 0.85223506 0.00455104815909
+recall_score : 0.87027777 0.00559981624485
