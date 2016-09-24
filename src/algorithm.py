@@ -19,7 +19,7 @@ def KNeighbors(n_neighbors):
     return KNeighborsClassifier(n_neighbors=n_neighbors, algorithm='ball_tree')
 
 def DecisionTree(max_depth):
-	return DecisionTreeClassifier(max_depth=max_depth)
+	return DecisionTreeClassifier(max_features='sqrt', max_depth=max_depth)
 	
 def SVM():
     return SVC(kernel='rbf')
@@ -57,7 +57,7 @@ def kFold(fold, X, Y):
 # Toma el x, el y, el nombre de la funcion a utilizar para reducir (o 'none'), la cantidad de dimensiones finales (o 'none')
 # el nombre de la funcion a utilizar para clasificar y el parametro que utiliza la funcion (o 'none')
 def cross_validation(X, Y, reduction, components, classifier, parameter): 
-	folds = kFold(5, X, Y)
+	folds = kFold(10, X, Y)
 
 	result = []
 
