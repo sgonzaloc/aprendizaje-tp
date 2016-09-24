@@ -17,8 +17,8 @@ from sklearn.metrics import confusion_matrix
 def KNeighbors(n_neighbors):
     return KNeighborsClassifier(n_neighbors=n_neighbors, algorithm='ball_tree')
 
-def DecisionTree():
-	return DecisionTreeClassifier()
+def DecisionTree(max_depth):
+	return DecisionTreeClassifier(max_depth=max_depth)
 	
 def SVM():
     return SVC(kernel='rbf')
@@ -71,7 +71,7 @@ def cross_validation(X, Y, reduction, components, classifier, parameter):
 		if classifier == 'KNeighbors':
 			clf = KNeighbors(parameter)
 		elif classifier == 'DecisionTree':
-			clf = DecisionTree()
+			clf = DecisionTree(parameter)
 		elif classifier == 'SVM':
 			clf = SVM()
 		elif classifier == 'RandomTrees':
