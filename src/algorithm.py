@@ -9,7 +9,8 @@ from sklearn.cross_decomposition import PLSRegression
 from sklearn.cross_validation import StratifiedKFold
 import numpy as np
 from sklearn.metrics import confusion_matrix
-
+import time
+from sklearn.metrics import accuracy_score, f1_score, precision_score, recall_score
 ############################################################
 #####                  Clasificadores                  #####
 ############################################################
@@ -60,7 +61,13 @@ def cross_validation(X, Y, reduction, components, classifier, parameter):
 
 	result = []
 
+	times = []
+	accuracy = []
+	f1 = []
+	precision = []
+	recall = []
 	for (x_train, x_test, y_train, y_test) in folds:
+		start_time = time.time()
 		# Reduzco dimensiones
 		if reduction == 'PCA':
 			x_train, x_test = PCA(components, x_train, x_test)
@@ -83,9 +90,20 @@ def cross_validation(X, Y, reduction, components, classifier, parameter):
 		clf = clf.fit(x_train, y_train) 
 
 		y_pred = clf.predict(x_test)
-		m = confusion_matrix(y_test.values, y_pred, labels=["ham", "spam"])
-		print m
+		y_true = y_test.values
+		confusion = confusion_matrix(y_true, y_pred, labels=["ham", "spam"])
+		print "confusion_matrix: ", confusion
 		# Verifico que tan bien predijo  
 		#result.append([i==j for i, j in zip(y_pred, y_test)])
+		times.append(round(time.time() - start_time,7))
+		accuracy.append(round(accuracy_score(y_true, y_pred),7))
+		f1.append(round(f1_score(y_true, y_pred, pos_label='spam'),7))
+		precision.append(round(precision_score(y_true, y_pred, pos_label='spam'),7))
+		recall.append(round(recall_score(y_true, y_pred, pos_label='spam'),7))
 
-	return result
+	print "tiempo de", classifier, ":", np.mean(times)
+	print "accuracy_score :", np.mean(accuracy), np.std(accuracy)
+	print "f1_score :", np.mean(f1), np.std(f1)
+	print "precision :", np.mean(precision), np.std(precision)
+	print "recall_score :", np.mean(recall), np.std(recall)
+	return 1

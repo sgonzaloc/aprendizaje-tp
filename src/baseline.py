@@ -8,7 +8,7 @@ from algorithm import *
 
 # Calculamos los features
 df = features()
-df = pd.concat([df.iloc[:15, :], df.iloc[71985:, :]], ignore_index=True)
+#df = pd.concat([df.iloc[:30, :], df.iloc[71970:, :]], ignore_index=True)
 
 # Preparamos data para clasificar
 X = df.iloc[:, 1:].values
