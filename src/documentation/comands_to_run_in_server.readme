@@ -1,0 +1,23 @@
+python
+import pandas as pd
+pd.__version__
+quit()
+
+mkdir /media/libre/aa-161C
+rsync --progress -a /home/gsanchez/Documents/materias/aprendizajeAutomatico/tps/tp1/ /media/libre/aa-161C/
+cd /media/libre/aa-161C/src/
+rm results.out
+tmux
+python test_randomforest.py >> results.out
+
+cp results_randomforest.out /home/gsanchez/Documents/materias/aprendizajeAutomatico/tps/tp1/src
+tail -f results.out 
+
+
+tmux a
+
+labo2 pc 1 ok >> random_forest ok
+labo2 pc 5 ok >> svm
+labo2 pc 17 >> naiveBayes ok
+labo2 pc 1 ok >> knn ok
+labo2 pc 17 >> decisionTree
