@@ -22,16 +22,16 @@ Profundidades = [Cant_Atributos * 0.1, Cant_Atributos * 0.5, Cant_Atributos * 0.
 Profundidades =  [round(Profundidad) for Profundidad in Profundidades]
 
 for arbol in arboles:
-    parameters = [arbol, 'sqrt', 'none', 1]
+    parameters = [arbol, 'sqrt', None, 1]
     print 'arboles: ' + str(arbol)
     res = cross_validation(X, Y, 'none', 'none', 'RandomTrees', parameters)
 
 for atributo in atributos:
-    parameters = [10, atributo, 'none', 1]
+    parameters = [10, atributo, None, 1]
     print 'atributos: ' + str(atributo)
     res = cross_validation(X, Y, 'none', 'none', 'RandomTrees', parameters)
 
-for Profundidad in Profundidades:
-    parameters = [10, 'sqrt', Profundidad, 1]
+for profundidad in Profundidades:
+    parameters = [10, 'sqrt', profundidad, 1]
     print 'profundidad: ' + str(profundidad)
-    res = cross_validation(X, Y, 'none', 'none', 'RandomTrees', profundidad)
+    res = cross_validation(X, Y, 'none', 'none', 'RandomTrees', parameters)

@@ -24,7 +24,7 @@ def DecisionTree(max_depth):
 def SVM():
     return SVC(kernel='rbf')
     
-def RandomTrees(n_trees, max_features='sqrt', max_depth=None, min_samples_split=1):
+def RandomTrees(n_trees, max_features, max_depth, min_samples_split):
     return RandomForestClassifier(n_estimators=n_trees, max_features=max_features, max_depth=max_depth, min_samples_split=min_samples_split)
    
 def NaiveBayes():
@@ -83,7 +83,7 @@ def cross_validation(X, Y, reduction, components, classifier, parameter):
 			clf = SVM()
 		elif classifier == 'RandomTrees':
 			_n_trees, _max_features, _max_depth, _min_samples_split = parameter
-                 clf = RandomTrees(_n_trees, max_features=_max_features, max_depth=_max_depth, min_samples_split=_min_samples_split)
+			clf = RandomTrees(_n_trees, _max_features, _max_depth, _min_samples_split)
 		else:
 			clf = NaiveBayes()
 
