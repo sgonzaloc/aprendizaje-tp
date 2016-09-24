@@ -1,0 +1,26 @@
+NaiveBayes
+confusion_matrix:  [[3193  407]
+ [  57 3543]]
+confusion_matrix:  [[3199  401]
+ [  47 3553]]
+confusion_matrix:  [[3173  427]
+ [  60 3540]]
+confusion_matrix:  [[3175  425]
+ [  51 3549]]
+confusion_matrix:  [[3193  407]
+ [  56 3544]]
+confusion_matrix:  [[3160  440]
+ [  51 3549]]
+confusion_matrix:  [[3192  408]
+ [  61 3539]]
+confusion_matrix:  [[3184  416]
+ [  62 3538]]
+confusion_matrix:  [[3182  418]
+ [  61 3539]]
+confusion_matrix:  [[3194  406]
+ [  58 3542]]
+tiempo de NaiveBayes : 21.29235683
+accuracy_score : 0.93445834 0.00169017242919
+f1_score : 0.93757367 0.00153662419091
+precision : 0.89505954 0.00259349457728
+recall_score : 0.98433333 0.0013505572243
