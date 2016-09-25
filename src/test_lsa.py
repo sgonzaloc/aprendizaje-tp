@@ -16,15 +16,21 @@ Y = df['class']
 Cant_Atributos = len(df.columns) - 1
 alpha = [Cant_Atributos * 0.1, Cant_Atributos * 0.3, Cant_Atributos * 0.5, Cant_Atributos * 0.7, Cant_Atributos * 0.9]
 alpha =  [int(round(component)) for component in alpha]
-clasificador = 'KNeighbors'
+
+# Clasificador 1 y sus parametros
+clasificador = 'RandomTrees'
+parameters =  [15, 0.1, 110, 1]
 
 print 'LSA con ' + clasificador
 for component in alpha:
     print 'alpha: ' + str(component)
-    res = cross_validation(X, Y, 'LSA', component, clasificador, 3)
+    res = cross_validation(X, Y, 'LSA', component, clasificador, parameters)
 
+#Clasificador numero 2 y sus parametros
 clasificador = 'DecisionTree'
+parameters = 110
+
 print 'LSA con ' + clasificador
 for component in alpha:
     print 'alpha: ' + str(component)
-    res = cross_validation(X, Y, 'LSA', component, clasificador, 5)
+    res = cross_validation(X, Y, 'LSA', component, clasificador, parameters)
