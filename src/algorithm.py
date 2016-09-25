@@ -34,16 +34,17 @@ def NaiveBayes():
 #####           Reducción de dimensionalidad           #####
 ############################################################
 
-def PCA(components, x_train, x_test):
-    pca = PCA(n_components=components, copy='False')
-    x_train = pca.fit_transform(x_train)
-    x_test = pca.transform(x_test)
-    return x_train, x_test
+def pcaReduction(components, x_train, x_test):
+	pca = PCA(n_components=components, copy='False')
+	x_train = pca.fit_transform(x_train)
+	x_test = pca.transform(x_test)
+	return x_train, x_test
 
-def PLS_DA(components, X, Y):
-	pls_da = PLSRegression(n_components=components)
-	y = map((lambda x: ([1, 0] if x == 'ham' else [0, 1])), Y)
-	pls_da.fit(X, y)
+def lsaReduction(components, x_train, x_test):
+	lsa = TruncatedSVD(n_components=components, random_state=18)
+	x_train = lsa.fit_transform(x_train)
+	x_test = lsa.transform(x_test)
+	return x_train, x_test
 
 ############################################################
 #####                 cross validation                 #####
@@ -70,9 +71,9 @@ def cross_validation(X, Y, reduction, components, classifier, parameter):
 		start_time = time.time()
 		# Reduzco dimensiones
 		if reduction == 'PCA':
-			x_train, x_test = PCA(components, x_train, x_test)
-		elif reduction == 'PLS_DA':
-			pass #no esta terminado
+			x_train, x_test = pcaReduction(components, x_train, x_test)
+		elif reduction == 'LSA':
+			x_train, x_test = lsaReduction(components, x_train, x_test)
 
 		# Elijo el clasificador
 		if classifier == 'KNeighbors':
