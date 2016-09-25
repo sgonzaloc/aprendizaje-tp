@@ -15,6 +15,7 @@ Y = df['class']
 # Hacemos cross validation
 print 'randomforest'
 
+"""
 arboles = [2, 5, 10, 15, 20]
 atributos = [None, 'auto', 0.1, 0.5, 0.8]
 Cant_Atributos = len(df.columns) -1
@@ -35,3 +36,14 @@ for profundidad in Profundidades:
     parameters = [10, 'sqrt', profundidad, 1]
     print 'profundidad: ' + str(profundidad)
     res = cross_validation(X, Y, 'none', 'none', 'RandomTrees', parameters)
+"""
+
+arbol = 15
+atributo = 0.1
+profundidad = 110
+parameters = [arbol, atributo, profundidad, 1]
+
+print 'arboles: ' + str(arbol)
+print 'atributos: ' + str(atributo)
+print 'profundidad: ' + str(profundidad)
+res = cross_validation(X, Y, 'none', 'none', 'RandomTrees', parameters)
