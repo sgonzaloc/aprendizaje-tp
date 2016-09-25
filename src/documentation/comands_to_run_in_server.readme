@@ -17,7 +17,7 @@ tail -f results.out
 tmux a
 
 labo2 pc 1 ok >> random_forest ok
-labo2 pc 5 ok >> svm
+labo2 pc 5 ok >> svm ok
 labo2 pc 17 >> naiveBayes ok
 labo2 pc 1 ok >> knn ok
-labo2 pc 17 >> decisionTree
+labo2 pc 17 >> decisionTree ok

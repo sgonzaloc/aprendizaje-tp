@@ -1,0 +1,26 @@
+svm
+confusion_matrix:  [[3363  237]
+ [ 496 3104]]
+confusion_matrix:  [[3329  271]
+ [ 523 3077]]
+confusion_matrix:  [[3341  259]
+ [ 507 3093]]
+confusion_matrix:  [[3335  265]
+ [ 462 3138]]
+confusion_matrix:  [[3351  249]
+ [ 496 3104]]
+confusion_matrix:  [[3330  270]
+ [ 499 3101]]
+confusion_matrix:  [[3345  255]
+ [ 499 3101]]
+confusion_matrix:  [[3319  281]
+ [ 507 3093]]
+confusion_matrix:  [[3337  263]
+ [ 507 3093]]
+confusion_matrix:  [[3343  257]
+ [ 504 3096]]
+tiempo de SVM : 9161.80607938
+accuracy_score : 0.89434723 0.00285722950847
+f1_score : 0.89071274 0.00302317414523
+precision : 0.92243407 0.00330961589223
+recall_score : 0.86111112 0.00409192844458
