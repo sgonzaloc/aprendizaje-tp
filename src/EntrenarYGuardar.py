@@ -33,7 +33,7 @@ saveClassifier('trained/ClasificadorSolo.pickle', 'w')
 print 'Entrenamos PCA'
 
 Cant_Atributos = len(df.columns) - 1
-components = Cant_Atributos * 0.1
+components = round(Cant_Atributos * 0.1)
 pca = PCA(n_components=components, copy='False')
 red = pca.fit(X)
 saveClassifier('trained/Reductor.pickle', 'w')
