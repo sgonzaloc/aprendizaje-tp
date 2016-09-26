@@ -12,6 +12,7 @@ import numpy as np
 from sklearn.metrics import confusion_matrix
 import time
 from sklearn.metrics import accuracy_score, f1_score, precision_score, recall_score
+import pickle
 ############################################################
 #####                  Clasificadores                  #####
 ############################################################
@@ -110,3 +111,12 @@ def cross_validation(X, Y, reduction, components, classifier, parameter):
 	print "precision :", np.mean(precision), np.std(precision)
 	print "recall_score :", np.mean(recall), np.std(recall)
 	return 1
+ 
+ ############################################################
+#####                  Guardado                         #####
+############################################################
+ 
+def saveClassifier(nombre, clf):
+    fout = open(nombre'.pickle','w')
+    pickle.dump(clf,fout)
+    fout.close()
