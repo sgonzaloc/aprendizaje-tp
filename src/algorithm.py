@@ -7,6 +7,7 @@ from sklearn.naive_bayes import BernoulliNB
 from sklearn.decomposition import PCA
 from sklearn.cross_decomposition import PLSRegression
 from sklearn.cross_validation import StratifiedKFold
+from sklearn.decomposition import TruncatedSVD
 import numpy as np
 from sklearn.metrics import confusion_matrix
 import time
