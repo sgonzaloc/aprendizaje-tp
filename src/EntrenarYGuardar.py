@@ -45,7 +45,7 @@ arbol = 15
 atributo = 0.1
 profundidad = 110
 
-clf = RandomTrees(_n_trees, _max_features, _max_depth, _min_samples_split)
+clf = RandomTrees(_n_trees, _max_features, _max_depth, 1)
 X_red = pca.transform(X)
 clf = clf.fit(X_red, Y)
 saveClassifier('trained/ClasificadorRed.pickle', 'w')
