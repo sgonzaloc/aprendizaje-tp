@@ -27,7 +27,7 @@ _max_depth = 110
 
 clf = RandomTrees(_n_trees, _max_features, _max_depth, 1)
 clf = clf.fit(X, Y)
-saveClassifier('trained/Clasificador.pickle', 'w')
+saveClassifier('trained/ClasificadorSolo.pickle', 'w')
 
 # Entrenamos Reduccion de dimensionalidad
 print 'Entrenamos PCA'
@@ -48,4 +48,4 @@ profundidad = 110
 clf = RandomTrees(_n_trees, _max_features, _max_depth, _min_samples_split)
 X_red = pca.transform(X)
 clf = clf.fit(X_red, Y)
-saveClassifier('trained/Clasificador.pickle', 'w')
+saveClassifier('trained/ClasificadorRed.pickle', 'w')
