@@ -1,0 +1,29 @@
+randomforest
+arboles: 15
+atributos: 0.1
+profundidad: 110
+confusion_matrix:  [[3595    5]
+ [  24 3576]]
+confusion_matrix:  [[3585   15]
+ [  22 3578]]
+confusion_matrix:  [[3586   14]
+ [  27 3573]]
+confusion_matrix:  [[3577   23]
+ [  24 3576]]
+confusion_matrix:  [[3588   12]
+ [  25 3575]]
+confusion_matrix:  [[3586   14]
+ [  18 3582]]
+confusion_matrix:  [[3577   23]
+ [  33 3567]]
+confusion_matrix:  [[3590   10]
+ [  27 3573]]
+confusion_matrix:  [[3586   14]
+ [  33 3567]]
+confusion_matrix:  [[3589   11]
+ [  18 3582]]
+tiempo de RandomTrees : 4.33091649
+accuracy_score : 0.99455555 0.00114665899573
+f1_score : 0.99454728 0.00114808481725
+precision : 0.99607279 0.00145135957533
+recall_score : 0.99302777 0.00137465917234
