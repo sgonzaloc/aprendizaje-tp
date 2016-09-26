@@ -1,0 +1,210 @@
+PCA con RandomTrees
+alpha: 22
+confusion_matrix:  [[3497  103]
+ [ 167 3433]]
+confusion_matrix:  [[3467  133]
+ [ 151 3449]]
+confusion_matrix:  [[3483  117]
+ [ 138 3462]]
+confusion_matrix:  [[3491  109]
+ [ 149 3451]]
+confusion_matrix:  [[3491  109]
+ [ 141 3459]]
+confusion_matrix:  [[3510   90]
+ [ 134 3466]]
+confusion_matrix:  [[3485  115]
+ [ 149 3451]]
+confusion_matrix:  [[3481  119]
+ [ 135 3465]]
+confusion_matrix:  [[3479  121]
+ [ 145 3455]]
+confusion_matrix:  [[3481  119]
+ [ 149 3451]]
+tiempo de RandomTrees : 64.6116695
+accuracy_score : 0.96398612 0.00208244650774
+f1_score : 0.96382441 0.00208178961687
+precision : 0.96819515 0.00300162165579
+recall_score : 0.9595 0.0025573714564
+alpha: 44
+confusion_matrix:  [[3579   21]
+ [  43 3557]]
+confusion_matrix:  [[3573   27]
+ [  29 3571]]
+confusion_matrix:  [[3579   21]
+ [  33 3567]]
+confusion_matrix:  [[3564   36]
+ [  25 3575]]
+confusion_matrix:  [[3583   17]
+ [  28 3572]]
+confusion_matrix:  [[3576   24]
+ [  39 3561]]
+confusion_matrix:  [[3580   20]
+ [  35 3565]]
+confusion_matrix:  [[3588   12]
+ [  34 3566]]
+confusion_matrix:  [[3572   28]
+ [  34 3566]]
+confusion_matrix:  [[3582   18]
+ [  32 3568]]
+tiempo de RandomTrees : 64.02206806
+accuracy_score : 0.99227778 0.000915403877859
+f1_score : 0.99226647 0.000914636790262
+precision : 0.99376301 0.0017584995476
+recall_score : 0.99077779 0.00138219212228
+alpha: 66
+confusion_matrix:  [[3580   20]
+ [  32 3568]]
+confusion_matrix:  [[3573   27]
+ [  31 3569]]
+confusion_matrix:  [[3580   20]
+ [  30 3570]]
+confusion_matrix:  [[3568   32]
+ [  24 3576]]
+confusion_matrix:  [[3581   19]
+ [  24 3576]]
+confusion_matrix:  [[3580   20]
+ [  39 3561]]
+confusion_matrix:  [[3579   21]
+ [  35 3565]]
+confusion_matrix:  [[3580   20]
+ [  32 3568]]
+confusion_matrix:  [[3580   20]
+ [  40 3560]]
+confusion_matrix:  [[3586   14]
+ [  25 3575]]
+tiempo de RandomTrees : 63.47082277
+accuracy_score : 0.99270834 0.000913395341788
+f1_score : 0.99269813 0.000916068963616
+precision : 0.99406897 0.00127624785841
+recall_score : 0.99133334 0.00151534276796
+alpha: 88
+confusion_matrix:  [[3584   16]
+ [  31 3569]]
+confusion_matrix:  [[3572   28]
+ [  26 3574]]
+confusion_matrix:  [[3579   21]
+ [  24 3576]]
+confusion_matrix:  [[3568   32]
+ [  20 3580]]
+confusion_matrix:  [[3579   21]
+ [  25 3575]]
+confusion_matrix:  [[3581   19]
+ [  26 3574]]
+confusion_matrix:  [[3575   25]
+ [  37 3563]]
+confusion_matrix:  [[3585   15]
+ [  30 3570]]
+confusion_matrix:  [[3570   30]
+ [  36 3564]]
+confusion_matrix:  [[3582   18]
+ [  22 3578]]
+tiempo de RandomTrees : 66.33797545
+accuracy_score : 0.99302777 0.0010932566314
+f1_score : 0.9930228 0.0010940296815
+precision : 0.99374334 0.00155935423314
+recall_score : 0.99230556 0.00149613489713
+PCA con DecisionTree
+alpha: 22
+confusion_matrix:  [[3380  220]
+ [ 189 3411]]
+confusion_matrix:  [[3340  260]
+ [ 191 3409]]
+confusion_matrix:  [[3365  235]
+ [ 218 3382]]
+confusion_matrix:  [[3376  224]
+ [ 222 3378]]
+confusion_matrix:  [[3379  221]
+ [ 211 3389]]
+confusion_matrix:  [[3370  230]
+ [ 209 3391]]
+confusion_matrix:  [[3372  228]
+ [ 210 3390]]
+confusion_matrix:  [[3360  240]
+ [ 184 3416]]
+confusion_matrix:  [[3367  233]
+ [ 207 3393]]
+confusion_matrix:  [[3353  247]
+ [ 209 3391]]
+tiempo de DecisionTree : 60.12617091
+accuracy_score : 0.93905556 0.00189091730977
+f1_score : 0.93929783 0.00189210939803
+precision : 0.93558345 0.00296833963833
+recall_score : 0.94305554 0.0033425870628
+alpha: 44
+confusion_matrix:  [[3548   52]
+ [  58 3542]]
+confusion_matrix:  [[3535   65]
+ [  56 3544]]
+confusion_matrix:  [[3536   64]
+ [  54 3546]]
+confusion_matrix:  [[3532   68]
+ [  42 3558]]
+confusion_matrix:  [[3552   48]
+ [  44 3556]]
+confusion_matrix:  [[3538   62]
+ [  56 3544]]
+confusion_matrix:  [[3538   62]
+ [  63 3537]]
+confusion_matrix:  [[3547   53]
+ [  67 3533]]
+confusion_matrix:  [[3544   56]
+ [  51 3549]]
+confusion_matrix:  [[3550   50]
+ [  40 3560]]
+tiempo de DecisionTree : 62.87589758
+accuracy_score : 0.98456943 0.00158047038444
+f1_score : 0.98457939 0.00158459106677
+precision : 0.98391358 0.00182563020122
+recall_score : 0.98524999 0.00234865946806
+alpha: 66
+confusion_matrix:  [[3550   50]
+ [  46 3554]]
+confusion_matrix:  [[3542   58]
+ [  46 3554]]
+confusion_matrix:  [[3541   59]
+ [  40 3560]]
+confusion_matrix:  [[3534   66]
+ [  49 3551]]
+confusion_matrix:  [[3541   59]
+ [  43 3557]]
+confusion_matrix:  [[3556   44]
+ [  46 3554]]
+confusion_matrix:  [[3524   76]
+ [  74 3526]]
+confusion_matrix:  [[3544   56]
+ [  61 3539]]
+confusion_matrix:  [[3561   39]
+ [  49 3551]]
+confusion_matrix:  [[3547   53]
+ [  42 3558]]
+tiempo de DecisionTree : 60.29059517
+accuracy_score : 0.98533335 0.00240818755177
+f1_score : 0.98534642 0.00240732872321
+precision : 0.9844756 0.00275755426529
+recall_score : 0.98622222 0.00271939136271
+alpha: 88
+confusion_matrix:  [[3557   43]
+ [  61 3539]]
+confusion_matrix:  [[3543   57]
+ [  59 3541]]
+confusion_matrix:  [[3544   56]
+ [  57 3543]]
+confusion_matrix:  [[3541   59]
+ [  46 3554]]
+confusion_matrix:  [[3547   53]
+ [  56 3544]]
+confusion_matrix:  [[3553   47]
+ [  52 3548]]
+confusion_matrix:  [[3550   50]
+ [  55 3545]]
+confusion_matrix:  [[3537   63]
+ [  52 3548]]
+confusion_matrix:  [[3527   73]
+ [  61 3539]]
+confusion_matrix:  [[3537   63]
+ [  37 3563]]
+tiempo de DecisionTree : 57.41586525
+accuracy_score : 0.98472224 0.00135656735933
+f1_score : 0.9847285 0.00135083007296
+precision : 0.98435156 0.00226507259981
+recall_score : 0.98511112 0.00195708791003
