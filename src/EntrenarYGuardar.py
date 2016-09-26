@@ -18,6 +18,17 @@ df = pd.concat([df.iloc[:30, :], df.iloc[71970:, :]], ignore_index=True) #Omitir
 X = df.iloc[:, 1:].values
 Y = df['class']
 
+# Entrenamos clasificador
+print 'Entrenamos randomforest solo'
+
+_n_trees = 15
+_max_features = 0.1
+_max_depth = 110
+
+clf = RandomTrees(_n_trees, _max_features, _max_depth, 1)
+clf = clf.fit(X, Y)
+saveClassifier('trained/Clasificador.pickle', 'w')
+
 # Entrenamos Reduccion de dimensionalidad
 print 'Entrenamos PCA'
 
@@ -34,7 +45,7 @@ arbol = 15
 atributo = 0.1
 profundidad = 110
 
-parameters = [arbol, atributo, profundidad, 1]
 clf = RandomTrees(_n_trees, _max_features, _max_depth, _min_samples_split)
-clf = clf.fit(X, Y)
+X_red = pca.transform(X)
+clf = clf.fit(X_red, Y)
 saveClassifier('trained/Clasificador.pickle', 'w')
