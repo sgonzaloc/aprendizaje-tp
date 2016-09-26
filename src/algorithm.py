@@ -117,6 +117,10 @@ def cross_validation(X, Y, reduction, components, classifier, parameter):
 ############################################################
  
 def saveClassifier(nombre, clf):
-    fout = open(nombre'.pickle','w')
+    fout = open(nombre+'.pickle','w')
     pickle.dump(clf,fout)
     fout.close()
+
+def loadClassifier(nombre, clf):
+    clf = pickle.load(open(nombre+'.pickle'))
+    return clf
