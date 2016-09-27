@@ -22,3 +22,5 @@ labo2 pc 17 >> naiveBayes ok
 labo2 pc 1 ok >> knn ok
 labo2 pc 17 >> decisionTree ok
 labo2 pc 1 >> random_forest_fijo ok
+
+python EntrenarYGuardar.py >> results/randomforestConPCATrain.out
