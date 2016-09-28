@@ -121,6 +121,6 @@ def saveClassifier(nombre, clf):
     pickle.dump(clf,fout)
     fout.close()
 
-def loadClassifier(nombre, clf):
+def loadClassifier(nombre):
     clf = pickle.load(open(nombre+'.pickle'))
     return clf
