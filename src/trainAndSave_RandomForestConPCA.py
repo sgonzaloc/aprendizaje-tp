@@ -46,4 +46,3 @@ start_time = time.time()
 clf = clf.fit(X_red, Y)
 print "Tiempo de randomForest con PCA ", round(time.time() - start_time,7)
 saveClassifier('trained_clasificadores/ClfRandomForestConPCA'+_max_features, clf)
-
