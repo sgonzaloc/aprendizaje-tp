@@ -1,0 +1,10 @@
+Algoritmo randomforest sin reduccion
+Prediccion randomforest sin reduccion
+Tiempo de randomForest sin reduccion  0.3694751
+confusion_matrix:  [[4468   32]
+ [  73 4427]]
+Tiempo de prediccion  0.3856871
+Accurracy  0.9883333
+F1  0.9882799
+Precision  0.9928235
+Recall  0.9837778

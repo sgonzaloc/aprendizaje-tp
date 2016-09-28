@@ -5,7 +5,7 @@ Created on Sun Sep 25 23:55:33 2016
 @author: Agus
 """
 import pickle
-from features_test import *
+from features_test_1 import *
 from algorithm import *
 import time
 # No creo q haga falta importar los reductores por separado si se importa algorithms, pero por si acaso
@@ -19,25 +19,18 @@ df = features_test()
 X = df.iloc[:, 1:].values
 Y = df['class']
 
-# Cargamos y aplicamos reduccion de dimensionalidad
-print 'Algoritmo randomforest con PCA'
-print 'Reduccion de dimencionalidad de datos de test con PCA'
-components = int(220)
-
-pca = loadClassifier('trained_clasificadores/ClfPCA'+str(components))
-start_time = time.time()
-X_red = pca.transform(X)
-print "Tiempo de reduccion de espacio con PCA ", round(time.time() - start_time,7)
-
-
 # Prediccion clasificador
-print 'Prediccion randomforest con PCA'
+print 'Algoritmo randomforest sin reduccion'
+print 'Prediccion randomforest sin reduccion'
 
-clf = loadClassifier('trained_clasificadores/ClfRandomForestConPCA'+str(components))
+_n_trees = 15
+_max_features = 110
+_max_depth = 110
+
+clf = loadClassifier('trained_clasificadores/ClfRandomForestSinReduccion')
 start_time = time.time()
-y_pred = clf.predict(X_red)
-print "Tiempo de randomForest con PCA ", round(time.time() - start_time,7)
-
+y_pred = clf.predict(X)
+print "Tiempo de randomForest sin reduccion ", round(time.time() - start_time,7)
 
 # Metricas de prediccion
 y_true = Y

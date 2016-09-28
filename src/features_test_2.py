@@ -17,39 +17,48 @@ def list_of_headers_dump(df):  # devuelve una lista con todos los headers que ha
         msg = email.message_from_string(mail.encode('utf-8'))
         headers |= set(msg.keys())
     headers = list(headers)
-    with open('trained/headers.json', 'w') as outfile:
+    with open('trained/headers_test_2.json', 'w') as outfile:
         json.dump(headers, outfile)
 
 
 def list_of_headers_load(df):
     try:
-        headers = json.load(open('trained/headers.json'))
+        headers = json.load(open('trained/headers_test_2.json'))
     except (OSError, IOError):
         list_of_headers_dump(df)
-        headers = json.load(open('trained/headers.json'))
+        headers = json.load(open('trained/headers_test_2.json'))
     return headers
 
 
-def features(path_features='./'):
+def list_of_headers_load_train(df):
+    try:
+        headers = json.load(open('trained/headers_train.json'))
+    except (OSError, IOError):
+        list_of_headers_dump(df)
+        headers = json.load(open('trained/headers_train.json'))
+    return headers
+
+def features_test():
     df_columns = ['class']
     try:
-        df = pd.read_pickle(path_features+'trained/features.pandas') # tal vez falta , encoding='utf-8'
+        df = pd.read_pickle('trained/features_test_2.pandas') # tal vez falta , encoding='utf-8'
     except IOError:
-	ham_txt = json.load(open('dataset_json_train/ham_txt_train.json'))
-	spam_txt = json.load(open('dataset_json_train/spam_txt_train.json'))
+    	ham_txt = json.load(open('dataset_json_test/2/ham_txt_test_2.json'))
+    	spam_txt = json.load(open('dataset_json_test/2/spam_txt_test_2.json'))
 
-	df_emails = pd.DataFrame(ham_txt + spam_txt, columns=['text'])
-	df_emails['class'] = ['ham' for _ in range(len(ham_txt))]+['spam' for _ in range(len(spam_txt))]
+    	df_emails = pd.DataFrame(ham_txt + spam_txt, columns=['text'])
+    	df_emails['class'] = ['ham' for _ in range(len(ham_txt))]+['spam' for _ in range(len(spam_txt))]
         df = pd.DataFrame(df_emails, columns=['class'])
         add_feature_len(df_emails, df, df_columns)
         add_feature_count_spaces(df_emails, df, df_columns)
         add_feature_char_count(df_emails, df, df_columns)
+        emails_by_headers_train = get_emails_by_headers_train(df_emails)
         emails_by_headers = get_emails_by_headers(df_emails)
         add_feature_response_mail(emails_by_headers, df, df_columns)
-        add_feature_email_headers(emails_by_headers, df, df_columns)
+        add_feature_email_headers(emails_by_headers_train, emails_by_headers, df, df_columns)
         add_feature_subject_most_common_words_spam(emails_by_headers, df, df_columns)
         add_feature_subject_most_common_words_ham(emails_by_headers, df, df_columns)
-        df.to_pickle(path_features+'trained/features.pandas') # tal vez falta , encoding='utf-8'
+        df.to_pickle('trained/features_test_2.pandas') # tal vez falta , encoding='utf-8'
         #df = df.loc[:, df_columns]
     return df
 
@@ -115,13 +124,13 @@ def add_feature_response_mail(emails_by_headers, df, df_columns):  # dice si el 
     df_columns.append('re:')
 
 
-def add_feature_email_headers(emails_by_headers, df, df_columns):
-    first_email_header = unicode.encode(emails_by_headers.keys()[0]) # el indice [0] de esta linea tampoco me funcionaba
+def add_feature_email_headers(emails_by_headers_train, emails_by_headers, df, df_columns):
+    first_email_header = unicode.encode(emails_by_headers_train.keys()[0]) # el indice [0] de esta linea tampoco me funcionaba
     if first_email_header not in df.columns.values:
-        for feature in emails_by_headers.keys():
+        for feature in emails_by_headers_train.keys():
             df[feature] = list(map(lambda x: x is not None, emails_by_headers[feature]))
         #df.to_csv('trained/features.csv', index=False, encoding='utf-8')
-    df_columns += emails_by_headers.keys()
+    df_columns += emails_by_headers_train.keys()
 
 
 def add_feature_char_count(df_emails, df, df_columns):
@@ -129,11 +138,20 @@ def add_feature_char_count(df_emails, df, df_columns):
         char_counter(df_emails, df, df_columns)
 
 
+def get_emails_by_headers_train(df_raw):
+    try:
+        emails_by_headers = json.load(open('trained/emails_by_headers_train.json'))
+    except (OSError, IOError) as error:
+        print('You have to train the emails_by_headers first: ' + repr(error))
+        raise 
+    return emails_by_headers
+
+
 def get_emails_by_headers(df_raw):
     try:
-        emails_by_headers = json.load(open('trained/emails_by_headers.json'))
+        emails_by_headers = json.load(open('trained/emails_by_headers_test_2.json'))
     except (OSError, IOError):
-        headers = list_of_headers_load(df_raw)
+        headers = list_of_headers_load_train(df_raw)
         emails_by_headers = {}
         for mail in df_raw['text']:
             msg = email.message_from_string(mail.encode('utf-8'))
@@ -142,35 +160,18 @@ def get_emails_by_headers(df_raw):
                     emails_by_headers[header].append(msg[header])
                 except KeyError:
                     emails_by_headers[header] = [msg[header]]
-        with open('trained/emails_by_headers.json', 'w') as outfile:
+        with open('trained/emails_by_headers_test_2.json', 'w') as outfile:
             json.dump(emails_by_headers, outfile)
     return emails_by_headers
 
 
 def get_subject_most_common_words(df, emails_by_headers):
     try:
-        word_frequencies_spam = json.load(open('trained/subject_most_common_words_spam.json'))
-        word_frequencies_ham = json.load(open('trained/subject_most_common_words_ham.json'))
-    except (OSError, IOError):
-        counter_vector = CountVectorizer(stop_words='english')
-        email_subjects_by_class = zip(list(emails_by_headers['subject']), list(df['class']))
-        email_subjects_by_class = [(s, c) if (s is not None) else ("", c) for (s, c) in email_subjects_by_class]
-        email_subjects_spam = [s for (s, c) in email_subjects_by_class if (c == 'spam')]
-        matrix_spam = counter_vector.fit_transform(email_subjects_spam)
-        word_frequencies_spam = [(word, matrix_spam.getcol(idx).count_nonzero()) for word, idx in
-                                 list(counter_vector.vocabulary_.items())] # Esta linea necesita la ultima version de scikit-learn
-        word_frequencies_spam = sorted(word_frequencies_spam, key=lambda x: -x[1])
-
-        email_subjects_ham = [s for (s, c) in email_subjects_by_class if (c == 'ham')]
-        matrix_ham = counter_vector.fit_transform(email_subjects_ham)
-        word_frequencies_ham = [(word, matrix_ham.getcol(idx).count_nonzero()) for word, idx in
-                                list(counter_vector.vocabulary_.items())]
-        word_frequencies_ham = sorted(word_frequencies_ham, key=lambda x: -x[1])
-
-        with open('trained/subject_most_common_words_spam.json', 'w') as outfile:
-            json.dump(word_frequencies_spam, outfile)
-        with open('trained/subject_most_common_words_ham.json', 'w') as outfile:
-            json.dump(word_frequencies_ham, outfile)
+        word_frequencies_spam = json.load(open('trained/subject_most_common_words_spam_train.json'))
+        word_frequencies_ham = json.load(open('trained/subject_most_common_words_ham_train.json'))
+    except (OSError, IOError) as error:
+        print('You have to train the emails_by_headers first: ' + repr(error))
+        raise 
     return word_frequencies_spam, word_frequencies_ham
 
 
@@ -182,7 +183,7 @@ def char_counter(df_emails, df, df_columns):
     """
     characters = set(r'!"#$%&\'()*+,-./:;?@[]^_`{|}~')
     try:
-        charac_count = json.load(open('trained/charac_count.json'))
+        charac_count = json.load(open('trained/charac_count_test_2.json'))
     except (OSError, IOError):
         charac_count = {}
         for character in characters:
@@ -198,7 +199,7 @@ def char_counter(df_emails, df, df_columns):
             else:
                 for character in characters:
                     charac_count[character].append(0)
-        with open('trained/charac_count.json', 'w') as outfile:
+        with open('trained/charac_count_test_2.json', 'w') as outfile:
             json.dump(charac_count, outfile)
 
     for character in characters:
