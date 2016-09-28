@@ -18,32 +18,32 @@ df = features()
 # Preparamos data para clasificar
 X = df.iloc[:, 1:].values
 Y = df['class']
-
+"""
 # Entrenamos clasificador
 print 'Entrenamos randomforest solo'
-
+"""
 _n_trees = 15
 _max_features = 110
 _max_depth = 110
 
-
+"""
 clf = RandomTrees(_n_trees, _max_features, _max_depth, 1)
 start_time = time.time()
 clf = clf.fit(X, Y)
 print "random tree solo ", round(time.time() - start_time,7)
 saveClassifier('trained_clasificadores/ClasificadorSolo', clf)
-
+"""
 
 # Entrenamos Reduccion de dimensionalidad
 print 'Entrenamos PCA'
 
 Cant_Atributos = len(df.columns) - 1
-components = int(Cant_Atributos * 0.1)
+components = int(Cant_Atributos * 0.2)
 pca = PCA(n_components=components, copy='False')
 start_time = time.time()
 red = pca.fit(X)
 print "Pca Training ", round(time.time() - start_time,7)
-saveClassifier('trained_clasificadores/Reductor110', clf)
+saveClassifier('trained_clasificadores/Reductor220', red)
 
 # Entrenamos clasificador
 print 'Entrenamos randomforest'
@@ -58,8 +58,8 @@ print X_red.shape
 start_time = time.time()
 clf = clf.fit(X_red, Y)
 print "Random Tree post PCA ", round(time.time() - start_time,7)
-saveClassifier('trained_clasificadores/ClasificadorRed110', clf)
-
+saveClassifier('trained_clasificadores/ClasificadorRed220', clf)
+"""
 # Entrenamos Reduccion de dimensionalidad
 print 'Entrenamos PCA'
 
@@ -83,3 +83,4 @@ start_time = time.time()
 clf = clf.fit(X_red, Y)
 print "Random Tree post PCA ", round(time.time() - start_time,7)
 saveClassifier('trained_clasificadores/ClasificadorRed44.pickle', clf)
+"""

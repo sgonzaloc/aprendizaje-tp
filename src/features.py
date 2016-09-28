@@ -33,7 +33,7 @@ def list_of_headers_load(df):
 def features():
     df_columns = ['class']
     try:
-        df = pd.read_pickle('trained/features_80.pandas') # tal vez falta , encoding='utf-8'
+        df = pd.read_pickle('trained/features_10.pandas') # tal vez falta , encoding='utf-8'
     except IOError:
     	ham_txt = json.load(open('dataset_json_test/1/ham_txt_test_1.json'))
     	spam_txt = json.load(open('dataset_json_test/1/spam_txt_test_1.json'))

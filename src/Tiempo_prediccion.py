@@ -28,27 +28,36 @@ clf = clf.predict(X)
 print "random tree solo ", round(time.time() - start_time,7)
 
 
-
+"""
 # Entrenamos Reduccion de dimensionalidad
-print 'Entrenamos PCA'
+print 'Cargamos PCA'
 
-Cant_Atributos = len(df.columns) - 1
-components = int(Cant_Atributos * 0.1)
-pca = loadClassifier('trained_clasificadores/Reductor110')
+pca = loadClassifier('trained_clasificadores/Reductor220')
 start_time = time.time()
 X_red = pca.transform(X)
 print "Pca Training ", round(time.time() - start_time,7)
 
 
 # Entrenamos clasificador
-print 'Entrenamos randomforest'
+print 'Cargamos randomforest'
 
-clf = loadClassifier('trained_clasificadores/ClasificadorRed110')
+clf = loadClassifier('trained_clasificadores/ClasificadorRed220')
 start_time = time.time()
-clf = clf.predict(X_red)
+y_pred = clf.predict(X_red)
 print "Random Tree post PCA ", round(time.time() - start_time,7)
 
-
+y_true = Y
+confusion = confusion_matrix(y_true, y_pred, labels=["ham", "spam"])
+print "confusion_matrix: ", confusion
+# Verifico que tan bien predijo  
+#result.append([i==j for i, j in zip(y_pred, y_test)])
+print round(time.time() - start_time,7)
+print round(accuracy_score(y_true, y_pred),7)
+print round(f1_score(y_true, y_pred, pos_label='spam'),7)
+print round(precision_score(y_true, y_pred, pos_label='spam'),7)
+print round(recall_score(y_true, y_pred, pos_label='spam'),7)
+"""
+"""
 # Entrenamos Reduccion de dimensionalidad
 print 'Entrenamos PCA'
 
@@ -66,3 +75,4 @@ start_time = time.time()
 clf = clf.predict(X_red, Y)
 print "Random Tree post PCA ", round(time.time() - start_time,7)
 
+"""
