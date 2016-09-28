@@ -19,7 +19,7 @@ df = features()
 X = df.iloc[:, 1:].values
 Y = df['class']
 
-# Entrenamos clasificador
+# Entrenamiento clasificador
 print 'Entrenamiento randomForest sin reduccion'
 
 _n_trees = 15
@@ -30,5 +30,5 @@ clf = RandomTrees(_n_trees, _max_features, _max_depth, 1)
 start_time = time.time()
 clf = clf.fit(X, Y)
 print "Tiempo de randomForest sin reduccion ", round(time.time() - start_time,7)
-saveClassifier('trained_clasificadores/ClfRandomForestSinReduccion'+_max_features, clf)
+saveClassifier('trained_clasificadores/ClfRandomForestSinReduccion', clf)
 

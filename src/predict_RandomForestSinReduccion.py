@@ -19,16 +19,18 @@ df = features_test()
 X = df.iloc[:, 1:].values
 Y = df['class']
 
-
-# Entrenamos clasificador
+# Prediccion clasificador
+print 'Algoritmo randomforest sin reduccion'
 print 'Prediccion randomforest sin reduccion'
+
+_n_trees = 15
+_max_features = 110
+_max_depth = 110
 
 clf = loadClassifier('trained_clasificadores/ClfRandomForestSinReduccion')
 start_time = time.time()
 y_pred = clf.predict(X)
 print "Tiempo de randomForest sin reduccion ", round(time.time() - start_time,7)
-
-
 
 # Metricas de prediccion
 y_true = Y
