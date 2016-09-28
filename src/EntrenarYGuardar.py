@@ -31,7 +31,7 @@ clf = RandomTrees(_n_trees, _max_features, _max_depth, 1)
 start_time = time.time()
 clf = clf.fit(X, Y)
 print "random tree solo ", round(time.time() - start_time,7)
-saveClassifier('trained/ClasificadorSolo.pickle', 'w')
+saveClassifier('trained_clasificadores/ClasificadorSolo', clf)
 
 
 # Entrenamos Reduccion de dimensionalidad
@@ -43,7 +43,7 @@ pca = PCA(n_components=components, copy='False')
 start_time = time.time()
 red = pca.fit(X)
 print "Pca Training ", round(time.time() - start_time,7)
-saveClassifier('trained/Reductor110.pickle', 'w')
+saveClassifier('trained_clasificadores/Reductor110', clf)
 
 # Entrenamos clasificador
 print 'Entrenamos randomforest'
@@ -58,7 +58,7 @@ print X_red.shape
 start_time = time.time()
 clf = clf.fit(X_red, Y)
 print "Random Tree post PCA ", round(time.time() - start_time,7)
-saveClassifier('trained/ClasificadorRed110.pickle', 'w')
+saveClassifier('trained_clasificadores/ClasificadorRed110', clf)
 
 # Entrenamos Reduccion de dimensionalidad
 print 'Entrenamos PCA'
@@ -68,7 +68,7 @@ pca = PCA(n_components=components, copy='False')
 start_time = time.time()
 red = pca.fit(X)
 print "Pca Training ", round(time.time() - start_time,7)
-saveClassifier('trained/Reductor44.pickle', 'w')
+saveClassifier('trained_clasificadores/Reductor44', clf)
 
 # Entrenamos clasificador
 print 'Entrenamos randomforest'
@@ -82,4 +82,4 @@ X_red = pca.transform(X)
 start_time = time.time()
 clf = clf.fit(X_red, Y)
 print "Random Tree post PCA ", round(time.time() - start_time,7)
-saveClassifier('trained/ClasificadorRed44.pickle', 'w')
+saveClassifier('trained_clasificadores/ClasificadorRed44.pickle', clf)

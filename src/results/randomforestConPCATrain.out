@@ -1,0 +1,11 @@
+Entrenamos randomforest solo
+random tree solo  4.5012879
+Entrenamos PCA
+Pca Training  61.4653852
+Entrenamos randomforest
+(72000, 110)
+Random Tree post PCA  128.105144
+Entrenamos PCA
+Pca Training  61.393203
+Entrenamos randomforest
+Random Tree post PCA  48.164933
