@@ -28,7 +28,7 @@ _max_depth = 110
 
 clf = RandomTrees(_n_trees, _max_features, _max_depth, 1)
 start_time = time.time()
-clf = clf.fit(X, Y)
+clf.fit(X, Y)
 print "Tiempo de randomForest sin reduccion ", round(time.time() - start_time,7)
 saveClassifier('trained_clasificadores/ClfRandomForestSinReduccion', clf)
 

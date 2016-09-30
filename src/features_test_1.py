@@ -65,8 +65,8 @@ def features_test():
 
 def add_feature_subject_most_common_words_spam(emails_by_headers, df, df_columns):
     word_frequencies_spam, word_frequencies_ham = get_subject_most_common_words(df, emails_by_headers)
-    most_common_words_spam = [w for (w, f) in word_frequencies_spam][:300]
-    most_common_words_ham = [w for (w, f) in word_frequencies_ham][:3000]
+    most_common_words_spam = [w for (w, f) in word_frequencies_spam][:500]
+    most_common_words_ham = [w for (w, f) in word_frequencies_ham][:2000]
     most_common_words = [w for w in most_common_words_spam if w not in most_common_words_ham]
 
     first_most_common_words = most_common_words[0]
@@ -85,8 +85,8 @@ def add_feature_subject_most_common_words_spam(emails_by_headers, df, df_columns
 
 def add_feature_subject_most_common_words_ham(emails_by_headers, df, df_columns):
     word_frequencies_spam, word_frequencies_ham = get_subject_most_common_words(df, emails_by_headers)
-    most_common_words_ham = [w for (w, f) in word_frequencies_ham][:300]
-    most_common_words_spam = [w for (w, f) in word_frequencies_spam][:3000]
+    most_common_words_ham = [w for (w, f) in word_frequencies_ham][:500]
+    most_common_words_spam = [w for (w, f) in word_frequencies_spam][:2000]
     most_common_words = [w for w in most_common_words_ham if w not in most_common_words_spam]
 
     first_most_common_words = most_common_words[0]

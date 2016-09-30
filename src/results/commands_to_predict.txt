@@ -1,7 +1,9 @@
 python trainAndSave_RandomForestSinReduccion.py >> results/trainAndSave_RandomForestSinReduccion.out
 python trainAndSave_RandomForestConPCA220.py >> results/trainAndSave_RandomForestConPCA220.out
 python trainAndSave_RandomForestConPCA44.py >> results/trainAndSave_RandomForestConPCA44.out
-python predict_RandomForestSinReduccion.py >> results/predict_RandomForestSinReduccion.out
-python predict_RandomForestConPCA220.py >> results/predict_RandomForestConPCA220.out
-python predict_RandomForestConPCA44.py >> results/predict_RandomForestConPCA44.out
+python predict_RandomForestSinReduccion_1.py >> results/predict_RandomForestSinReduccion_1.out
+python predict_RandomForestConPCA220_1.py >> results/predict_RandomForestConPCA220_1.out
+python predict_RandomForestConPCA44_1.py >> results/predict_RandomForestConPCA44_1.out
+python predict_RandomForestSinReduccion_2.py >> results/predict_RandomForestSinReduccion_2.out
+python predict_RandomForestSinReduccion_competencia.py >> results/predict_RandomForestSinReduccion_competencia.csv
 

@@ -1,0 +1,12 @@
+Algoritmo randomforest con PCA
+Reduccion de dimencionalidad de datos de test con PCA
+Tiempo de reduccion de espacio con PCA  5.5236139
+Prediccion randomforest con PCA
+Tiempo de randomForest con PCA  0.0458238
+confusion_matrix:  [[4483   17]
+ [  32 4468]]
+Tiempo de prediccion  0.0651538
+Accurracy  0.9945556
+F1  0.9945465
+Precision  0.9962096
+Recall  0.9928889
