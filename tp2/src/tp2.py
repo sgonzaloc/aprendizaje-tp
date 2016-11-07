@@ -16,6 +16,8 @@ class FourInARow:
         return board
 
     def playGame(self):
+    	self.playerX.start_game('X')
+    	self.playerO.start_game('O')
         while True:
             if self.playerX_turn:  #definimos al jugador y al rival
                 player, char, other_player = self.playerX, 'X', self.playerO
@@ -44,7 +46,7 @@ class FourInARow:
                 other_player.reward(0.5, self.board)
                 break
 
-            other_player.reward(0, sef.board) # Le avisa al otro jugador que aprenda que su jugada no lo hizo perder ni empatar (si uhbiese ganado, se daba cunta en la ronda anterior)
+            other_player.reward(0, self.board, self.potentialMoves) # Le avisa al otro jugador que aprenda que su jugada no lo hizo perder ni empatar (si uhbiese ganado, se daba cunta en la ronda anterior)
             self.playerX_turn = not self.playerX_turn
 
     def playerWin(self):
@@ -104,11 +106,25 @@ class QLearningPlayer(object):
         self.last_board = (' ',)*9
         self.last_move = None
 
+    def make_str(self, state, action):
+    	action_str = str(action[0]) + str(action[1])
+        state_str = [''.join(rows) for rows in state]
+        state_str = '_'.join(state_str)
+        
+        return state_str, action_str
+
     def getQ(self, state, action):
         # encourage exploration; "optimistic" 1.0 initial values
-        if self.q.get((state, action)) is None:
-            self.q[(state, action)] = 1.0
-        return self.q.get((state, action))
+        # paso a string el estado y decision para crear las claves del dict
+        state_str, action_str = self.make_str(state, action)
+        
+        if self.q.get((state_str, action_str)) is None:
+            self.q[(state_str, action_str)] = 1.0
+        return self.q.get((state_str, action_str))
+
+    def setQ(self, state, action, value):
+        state_str, action_str = self.make_str(state, action)
+        self.q[(state_str, action_str)] = value
 
     def move(self, board, actions):
         self.last_board = tuple(board)
@@ -116,7 +132,7 @@ class QLearningPlayer(object):
         if random.random() < self.epsilon: # explore!
             self.last_move = random.choice(actions)
             return self.last_move
-
+        
         qs = [self.getQ(self.last_board, a) for a in actions]
         maxQ = max(qs)
 
@@ -130,14 +146,19 @@ class QLearningPlayer(object):
         self.last_move = actions[i]
         return actions[i]
 
-    def reward(self, value, board):
+    def reward(self, value, board, actions=[]):
         if self.last_move:
-            self.learn(self.last_board, self.last_move, value, tuple(board))
+            self.learn(self.last_board, self.last_move, value, tuple(board), actions)
 
-    def learn(self, state, action, reward, result_state):
+    def learn(self, state, action, reward, result_state, actions):
         prev = self.getQ(state, action)
-        maxqnew = max([self.getQ(result_state, a) for a in self.available_moves(state)])
-		self.q[(state, action)] = prev + self.alpha * ((reward + self.gamma*maxqnew) - prev)
+        try:
+        	maxqnew = max([self.getQ(result_state, a) for a in actions])
+        except ValueError:
+        	maxqnew = 0
+        new_value = prev + self.alpha * ((reward + self.gamma*maxqnew) - prev)
+        self.setQ(state, action, new_value)
+
 
 p1 = QLearningPlayer()
 p2 = QLearningPlayer()
