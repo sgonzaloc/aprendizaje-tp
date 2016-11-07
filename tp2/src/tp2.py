@@ -16,8 +16,8 @@ class FourInARow:
         return board
 
     def playGame(self):
-    	self.playerX.start_game('X')
-    	self.playerO.start_game('O')
+    	self.playerX.start_game(self.board)
+    	self.playerO.start_game(self.board)
         while True:
             if self.playerX_turn:  #definimos al jugador y al rival
                 player, char, other_player = self.playerX, 'X', self.playerO
@@ -102,8 +102,8 @@ class QLearningPlayer(object):
         self.alpha = alpha # learning rate
         self.gamma = gamma # discount factor for future rewards
 
-    def start_game(self, char):
-        self.last_board = (' ',)*9
+    def start_game(self, board):
+        self.last_board = board
         self.last_move = None
 
     def make_str(self, state, action):
