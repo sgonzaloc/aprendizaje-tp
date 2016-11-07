@@ -82,6 +82,7 @@ class FourInARow:
             print '| ' +' | '.join(raw) + ' |'
             print "-----------------------------"
 
+
 class Player(object):
     def move(self, board, potentialMoves): #devuelve una tupla perteneciente a potentialMoves
         return random.choice(potentialMoves)
@@ -89,8 +90,56 @@ class Player(object):
     def reward(self, value, board):
         pass
 
-p1 = Player()
-p2 = Player()
+
+class QLearningPlayer(object):
+    def __init__(self, epsilon=0.2, alpha=0.3, gamma=0.9):
+        self.breed = "Qlearner"
+        self.q = {} # (state, action) keys: Q values
+        self.epsilon = epsilon # e-greedy chance of random exploration
+        self.alpha = alpha # learning rate
+        self.gamma = gamma # discount factor for future rewards
+
+    def start_game(self, char):
+        self.last_board = (' ',)*9
+        self.last_move = None
+
+    def getQ(self, state, action):
+        # encourage exploration; "optimistic" 1.0 initial values
+        if self.q.get((state, action)) is None:
+            self.q[(state, action)] = 1.0
+        return self.q.get((state, action))
+
+    def move(self, board, actions):
+        self.last_board = tuple(board)
+
+        if random.random() < self.epsilon: # explore!
+            self.last_move = random.choice(actions)
+            return self.last_move
+
+        qs = [self.getQ(self.last_board, a) for a in actions]
+        maxQ = max(qs)
+
+        if qs.count(maxQ) > 1:
+            # more than 1 best option; choose among them randomly
+            best_options = [i for i in range(len(actions)) if qs[i] == maxQ]
+            i = random.choice(best_options)
+        else:
+            i = qs.index(maxQ)
+
+        self.last_move = actions[i]
+        return actions[i]
+
+    def reward(self, value, board):
+        if self.last_move:
+            self.learn(self.last_board, self.last_move, value, tuple(board))
+
+    def learn(self, state, action, reward, result_state):
+        prev = self.getQ(state, action)
+        maxqnew = max([self.getQ(result_state, a) for a in self.available_moves(state)])
+		self.q[(state, action)] = prev + self.alpha * ((reward + self.gamma*maxqnew) - prev)
+
+p1 = QLearningPlayer()
+p2 = QLearningPlayer()
 
 for i in xrange(0,2):
     t = FourInARow(p1, p2)
