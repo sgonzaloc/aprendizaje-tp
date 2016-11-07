@@ -44,6 +44,7 @@ class FourInARow:
                 other_player.reward(0.5, self.board)
                 break
 
+            other_player.reward(0, sef.board) # Le avisa al otro jugador que aprenda que su jugada no lo hizo perder ni empatar (si uhbiese ganado, se daba cunta en la ronda anterior)
             self.playerX_turn = not self.playerX_turn
 
     def playerWin(self):
