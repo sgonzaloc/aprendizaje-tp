@@ -32,22 +32,20 @@ class FourInARow:
                 for index,value in enumerate(self.potentialMoves):
                     if value == playerMove:
                         self.potentialMoves[index] = (self.potentialMoves[index][0]-1,self.potentialMoves[index][1])
-
             self.remainingMoves = self.remainingMoves - 1
-
-            self.displayBoard()
-
             if self.playerWin():
-                player.reward(1, self.board)
-                other_player.reward(-1, self.board)
+                player.reward(1, self.board, self.potentialMoves)
+                other_player.reward(-1, self.board, self.potentialMoves)
                 break
             if self.boardFull(): # tie game
-                player.reward(0.5, self.board)
-                other_player.reward(0.5, self.board)
+                player.reward(0.5, self.board, self.potentialMoves)
+                other_player.reward(0.5, self.board, self.potentialMoves)
                 break
-
             other_player.reward(0, self.board, self.potentialMoves) # Le avisa al otro jugador que aprenda que su jugada no lo hizo perder ni empatar (si uhbiese ganado, se daba cunta en la ronda anterior)
             self.playerX_turn = not self.playerX_turn
+
+        #self.displayBoard()
+
 
     def playerWin(self):
         # horizontal
@@ -87,14 +85,26 @@ class FourInARow:
 
 
 class Player(object):
+    win = 0
+
     def move(self, board, potentialMoves): #devuelve una tupla perteneciente a potentialMoves
         return random.choice(potentialMoves)
 
-    def reward(self, value, board):
+    def start_game(self, board):
         pass
+
+    def reward(self, value, board, potentialMoves):
+        if value == 1:
+            Player.win = Player.win + 1
+            
+    def score(self):
+        return Player.win
 
 
 class QLearningPlayer(object):
+    win = 0
+    escenario = 0
+                        #epsilon=0.2, alpha=0.3, gamma=0.9
     def __init__(self, epsilon=0.2, alpha=0.3, gamma=0.9):
         self.breed = "Qlearner"
         self.q = {} # (state, action) keys: Q values
@@ -103,7 +113,7 @@ class QLearningPlayer(object):
         self.gamma = gamma # discount factor for future rewards
 
     def start_game(self, board):
-        self.last_board = board
+        self.last_board = [x[:] for x in board]
         self.last_move = None
 
     def make_str(self, state, action):
@@ -119,21 +129,21 @@ class QLearningPlayer(object):
         state_str, action_str = self.make_str(state, action)
         
         if self.q.get((state_str, action_str)) is None:
-            self.q[(state_str, action_str)] = 1.0
+            self.q[(state_str, action_str)] = 0.0
+            QLearningPlayer.escenario = QLearningPlayer.escenario + 1
         return self.q.get((state_str, action_str))
 
     def setQ(self, state, action, value):
         state_str, action_str = self.make_str(state, action)
         self.q[(state_str, action_str)] = value
 
-    def move(self, board, actions):
-        self.last_board = tuple(board)
-
+    def move(self, board, actions): 
+        self.last_board = [x[:] for x in board] #last_board = S
+        #elijo la mejor accion (last_move) para el S actual
         if random.random() < self.epsilon: # explore!
             self.last_move = random.choice(actions)
             return self.last_move
-        
-        qs = [self.getQ(self.last_board, a) for a in actions]
+        qs = [self.getQ(self.last_board, a) for a in actions] #elijo la accion con mejor Q
         maxQ = max(qs)
 
         if qs.count(maxQ) > 1:
@@ -149,20 +159,34 @@ class QLearningPlayer(object):
     def reward(self, value, board, actions=[]):
         if self.last_move:
             self.learn(self.last_board, self.last_move, value, tuple(board), actions)
+        if value == 1:
+            QLearningPlayer.win = QLearningPlayer.win + 1
 
     def learn(self, state, action, reward, result_state, actions):
         prev = self.getQ(state, action)
-        try:
-        	maxqnew = max([self.getQ(result_state, a) for a in actions])
-        except ValueError:
-        	maxqnew = 0
+        if reward == 0: #no estoy seguro de esto pero es para que no vea las acciones siguientes a un estado ganador/perdedor/empatado
+            try:
+            	maxqnew = max([self.getQ(result_state, a) for a in actions])
+            except ValueError:
+            	maxqnew = 0
+        else:
+            maxqnew = 0
         new_value = prev + self.alpha * ((reward + self.gamma*maxqnew) - prev)
         self.setQ(state, action, new_value)
 
+    def score(self):
+        return QLearningPlayer.win
+
 
 p1 = QLearningPlayer()
-p2 = QLearningPlayer()
+p2 = Player()
 
-for i in xrange(0,2):
+for i in xrange(0,200000):
     t = FourInARow(p1, p2)
     t.playGame()
+    print "epsilon=0.2, alpha=0.3, gamma=0.9"
+    print "Round: " + str(i)
+    print "QLearning win: " + str(p1.score())
+    print "Random win: " + str(p2.score())
+    print "tie: " + str(i - p1.score() - p2.score())
+    t.displayBoard()
