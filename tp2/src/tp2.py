@@ -16,8 +16,8 @@ class FourInARow:
         return board
 
     def playGame(self):
-    	self.playerX.start_game(self.board)
-    	self.playerO.start_game(self.board)
+        self.playerX.start_game(self.board)
+        self.playerO.start_game(self.board)
         while True:
             if self.playerX_turn:  #definimos al jugador y al rival
                 player, char, other_player = self.playerX, 'X', self.playerO
@@ -78,14 +78,16 @@ class FourInARow:
         return self.remainingMoves == 0
 
     def displayBoard(self):
-        print "-----------------------------"
+        print("-----------------------------")
         for raw in self.board:
-            print '| ' +' | '.join(raw) + ' |'
-            print "-----------------------------"
+            print('| ' +' | '.join(raw) + ' |')
+            print("-----------------------------")
 
 
 class Player(object):
-    win = 0
+    def __init__(self):
+        self.breed = 'random'
+        self.win = 0
 
     def move(self, board, potentialMoves): #devuelve una tupla perteneciente a potentialMoves
         return random.choice(potentialMoves)
@@ -95,15 +97,13 @@ class Player(object):
 
     def reward(self, value, board, potentialMoves):
         if value == 1:
-            Player.win = Player.win + 1
+            self.win += 1
             
     def score(self):
-        return Player.win
+        return self.win
 
 
 class QLearningPlayer(object):
-    win = 0
-    escenario = 0
                         #epsilon=0.2, alpha=0.3, gamma=0.9
     def __init__(self, epsilon=0.2, alpha=0.3, gamma=0.9):
         self.breed = "Qlearner"
@@ -111,13 +111,15 @@ class QLearningPlayer(object):
         self.epsilon = epsilon # e-greedy chance of random exploration
         self.alpha = alpha # learning rate
         self.gamma = gamma # discount factor for future rewards
+        self.win = 0
+        self.escenario = 0
 
     def start_game(self, board):
         self.last_board = [x[:] for x in board]
         self.last_move = None
 
     def make_str(self, state, action):
-    	action_str = str(action[0]) + str(action[1])
+        action_str = str(action[0]) + str(action[1])
         state_str = [''.join(rows) for rows in state]
         state_str = '_'.join(state_str)
         
@@ -130,7 +132,7 @@ class QLearningPlayer(object):
         
         if self.q.get((state_str, action_str)) is None:
             self.q[(state_str, action_str)] = 0.0
-            QLearningPlayer.escenario = QLearningPlayer.escenario + 1
+            self.escenario += 1
         return self.q.get((state_str, action_str))
 
     def setQ(self, state, action, value):
@@ -160,7 +162,7 @@ class QLearningPlayer(object):
         if self.last_move:
             self.learn(self.last_board, self.last_move, value, tuple(board), actions)
         if value == 1:
-            QLearningPlayer.win = QLearningPlayer.win + 1
+            self.win += 1
 
     def learn(self, state, action, reward, result_state, actions):
         prev = self.getQ(state, action)
@@ -175,18 +177,36 @@ class QLearningPlayer(object):
         self.setQ(state, action, new_value)
 
     def score(self):
-        return QLearningPlayer.win
+        return self.win
 
+epsilones = [0, 0.2, 0.4, 0.6, 0.8, 1]
+#alfas = [0, 0.2, 0.4, 0.6, 0.8, 1]
+#gammas = [0, 0.2, 0.4, 0.6, 0.8, 1]
 
-p1 = QLearningPlayer()
-p2 = Player()
-
-for i in xrange(0,200000):
-    t = FourInARow(p1, p2)
-    t.playGame()
-    print "epsilon=0.2, alpha=0.3, gamma=0.9"
-    print "Round: " + str(i)
-    print "QLearning win: " + str(p1.score())
-    print "Random win: " + str(p2.score())
-    print "tie: " + str(i - p1.score() - p2.score())
-    t.displayBoard()
+#epsilon=0.2, alpha=0.3, gamma=0.9
+for eps in epsilones:
+    for n in range(0, 6):
+        p1 = QLearningPlayer(epsilon=eps)
+        p2 = Player()
+        
+        saveName = r'Resultados\Optimizacion_e'+str(round(10*eps))+'_n'+str(n)+'.txt'
+        newfile = open(saveName, 'w')
+        newfile.close()
+        
+        for i in range(0,200000):
+            t = FourInARow(p1, p2)
+            t.playGame()
+            """ No hace falta mostrar nada si uno tiene Fe
+            print "epsilon=0.2, alpha=0.3, gamma=0.9"
+            print "Round: " + str(i)
+            print "QLearning win: " + str(p1.score())
+            print "Random win: " + str(p2.score())
+            print "tie: " + str(i - p1.score() - p2.score())
+            t.displayBoard()
+            """
+            res = [str(i+1), str(p1.score()), str(p2.score())]
+            str_to_append = '\t'.join(res)
+            str_to_append = '\n' + str_to_append
+            
+            with open(saveName, "a") as myfile:
+                myfile.write(str_to_append)
