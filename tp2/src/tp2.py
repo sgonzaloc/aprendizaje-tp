@@ -178,6 +178,15 @@ class QLearningPlayer(object):
 
     def score(self):
         return self.win
+    
+    def set_epsilon(self, eps):
+        self.epsilon = eps
+    
+    def set_alpha(self, al):
+        self.epsilon = al
+    
+    def set_gamma(self, ga):
+        self.epsilon = ga
 
 epsilones = [0, 0.2, 0.4, 0.6, 0.8, 1]
 #alfas = [0, 0.2, 0.4, 0.6, 0.8, 1]
