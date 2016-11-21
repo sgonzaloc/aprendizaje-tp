@@ -188,6 +188,7 @@ class QLearningPlayer(object):
     def set_gamma(self, ga):
         self.epsilon = ga
 
+#%% Funciones de los distintos test a correr
 def Sweep_param():
     epsilones = [0, 0.2, 0.4, 0.6, 0.8, 1]
     #alfas = [0, 0.2, 0.4, 0.6, 0.8, 1]
@@ -233,14 +234,7 @@ def Train_Until(partida):
         for i in range(0,200000):
             t = FourInARow(p1, p2)
             t.playGame()
-            """ No hace falta mostrar nada si uno tiene Fe
-            print "epsilon=0.2, alpha=0.3, gamma=0.9"
-            print "Round: " + str(i)
-            print "QLearning win: " + str(p1.score())
-            print "Random win: " + str(p2.score())
-            print "tie: " + str(i - p1.score() - p2.score())
-            t.displayBoard()
-            """
+            
             res = [str(i+1), str(p1.score()), str(p2.score())]
             str_to_append = '\t'.join(res)
             str_to_append = '\n' + str_to_append
@@ -251,4 +245,44 @@ def Train_Until(partida):
             if i==partida:
                 p1.set_epsilon(0)
 
+def QvsQ():
+    for n in range(0, 6):
+        p1 = QLearningPlayer()
+        p2 = QLearningPlayer()
+        
+        saveName = r'Resultados\QvsQ_n'+str(n)+'.txt'
+        newfile = open(saveName, 'w')
+        newfile.close()
+        
+        for i in range(0,200000):
+            t = FourInARow(p1, p2)
+            t.playGame()
+            
+            res = [str(i+1), str(p1.score()), str(p2.score())]
+            str_to_append = '\t'.join(res)
+            str_to_append = '\n' + str_to_append
+            
+            with open(saveName, "a") as myfile:
+                myfile.write(str_to_append)
+        
+        p2.set_alpha(0) # deja de aprender
+        
+        for i in range(200000,600000):
+            t = FourInARow(p1, p2)
+            t.playGame()
+            
+            res = [str(i+1), str(p1.score()), str(p2.score())]
+            str_to_append = '\t'.join(res)
+            str_to_append = '\n' + str_to_append
+            
+            with open(saveName, "a") as myfile:
+                myfile.write(str_to_append)
+
+#%% Pruebas a correr
+
 hasta_partida = [500, 1000, 5000, 10000, 50000, 100000]
+
+for this_partida in hasta_partida:
+    Train_Until(this_partida)
+
+QvsQ()
