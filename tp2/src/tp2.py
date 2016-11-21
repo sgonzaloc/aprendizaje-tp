@@ -188,17 +188,45 @@ class QLearningPlayer(object):
     def set_gamma(self, ga):
         self.epsilon = ga
 
-epsilones = [0, 0.2, 0.4, 0.6, 0.8, 1]
-#alfas = [0, 0.2, 0.4, 0.6, 0.8, 1]
-#gammas = [0, 0.2, 0.4, 0.6, 0.8, 1]
+def Sweep_param():
+    epsilones = [0, 0.2, 0.4, 0.6, 0.8, 1]
+    #alfas = [0, 0.2, 0.4, 0.6, 0.8, 1]
+    #gammas = [0, 0.2, 0.4, 0.6, 0.8, 1]
+    
+    #epsilon=0.2, alpha=0.3, gamma=0.9
+    for eps in epsilones:
+        for n in range(0, 6):
+            p1 = QLearningPlayer(epsilon=eps)
+            p2 = Player()
+            
+            saveName = r'Resultados\Optimizacion_e'+str(round(10*eps))+'_n'+str(n)+'.txt'
+            newfile = open(saveName, 'w')
+            newfile.close()
+            
+            for i in range(0,200000):
+                t = FourInARow(p1, p2)
+                t.playGame()
+                """ No hace falta mostrar nada si uno tiene Fe
+                print "epsilon=0.2, alpha=0.3, gamma=0.9"
+                print "Round: " + str(i)
+                print "QLearning win: " + str(p1.score())
+                print "Random win: " + str(p2.score())
+                print "tie: " + str(i - p1.score() - p2.score())
+                t.displayBoard()
+                """
+                res = [str(i+1), str(p1.score()), str(p2.score())]
+                str_to_append = '\t'.join(res)
+                str_to_append = '\n' + str_to_append
+                
+                with open(saveName, "a") as myfile:
+                    myfile.write(str_to_append)
 
-#epsilon=0.2, alpha=0.3, gamma=0.9
-for eps in epsilones:
+def Train_Until(partida):
     for n in range(0, 6):
-        p1 = QLearningPlayer(epsilon=eps)
+        p1 = QLearningPlayer(epsilon=1)
         p2 = Player()
         
-        saveName = r'Resultados\Optimizacion_e'+str(round(10*eps))+'_n'+str(n)+'.txt'
+        saveName = r'Resultados\PreEntrenamiento_partidas'+str(partida)+'_n'+str(n)+'.txt'
         newfile = open(saveName, 'w')
         newfile.close()
         
@@ -219,3 +247,8 @@ for eps in epsilones:
             
             with open(saveName, "a") as myfile:
                 myfile.write(str_to_append)
+            
+            if i==partida:
+                p1.set_epsilon(0)
+
+hasta_partida = [500, 1000, 5000, 10000, 50000, 100000]
