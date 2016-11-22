@@ -183,10 +183,10 @@ class QLearningPlayer(object):
         self.epsilon = eps
     
     def set_alpha(self, al):
-        self.epsilon = al
+        self.alpha = al
     
     def set_gamma(self, ga):
-        self.epsilon = ga
+        self.gamma = ga
 
 #%% Funciones de los distintos test a correr
 def Sweep_param():
