@@ -78,7 +78,7 @@ partidas = [500, 1000, 5000, 10000, 50000, 100000]
 
 for partida in partidas:
     partidas_r, this_Q, this_R, this_Q_err, this_R_err = promedio('PreEntrenamiento', partida)
-    plt.plot(partidas_r, this_Q, alpha=0.7, label=+str(partida))
+    plt.plot(partidas_r, this_Q, alpha=0.7, label=str(partida))
     
     plt.fill_between(partidas_r, this_Q+this_Q_err, this_Q-this_Q_err, color='0.6', alpha=0.75)
 
