@@ -133,7 +133,7 @@ for eps in epsilons:
     
     plt.fill_between(partidas_r, this_Q+this_Q_err, this_Q-this_Q_err, color='0.6', alpha=0.75)
 
-plt.legend(loc=1)
+plt.legend(loc=2)
 plt.xlabel('Partidas')
 plt.ylabel('Porcentaje Ganadas')
 #plt.title('$\epsilon$-greedy')
