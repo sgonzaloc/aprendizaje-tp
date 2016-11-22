@@ -37,7 +37,7 @@ def ratio(partidas, Qganadas, Rganadas, bineado):
     Rratio = np.diff(R)/bineado
     return indices, Qratio, Rratio
 
-def promedio(tipo, var):
+def promedio(eps, tipo, exp, var):
     if not isinstance(var, str):
         var = str(int(var*10))
     
@@ -45,7 +45,10 @@ def promedio(tipo, var):
     Qs = []
     Rs = []
     for n in ns:
-        file = FileDictionary[(tipo, var, str(n))]
+        if eps==0:
+            file = FileDictionary_e0[(tipo, exp, var, str(n))]
+        elif eps==2:
+            file = FileDictionary_e2[(tipo, exp, var, str(n))]
         partidas, Qganadas, Rganadas = cargar_partidas(file)
         partidas_r, Q_r, R_r = ratio(partidas, Qganadas, Rganadas, 500)
         Qs.append(Q_r)
@@ -78,25 +81,31 @@ for file in Files:
         exp = file_parts[1][0]
         var = file_parts[1][1:]
         n_usado = file_parts[2].split('.')[0][1:]
-        FileDictionary_e0[(tipo, exp, var, n_usado)] = file
+        FileDictionary_e2[(tipo, exp, var, n_usado)] = file
 
 
 #%% Gráfico de epsilon First
 
-partidas = [500, 1000, 5000, 10000, 50000, 100000]
+varias = np.arange(0, 1.1, 0.2)
+epsilones = [0, 2]
+exps = ['a', 'g']
 
-for partida in partidas:
-    partidas_r, this_Q, this_R, this_Q_err, this_R_err = promedio('Optimizacion', partida)
-    plt.plot(partidas_r, this_Q, alpha=0.7, label=str(partida))
-    
-    plt.fill_between(partidas_r, this_Q+this_Q_err, this_Q-this_Q_err, color='0.6', alpha=0.75)
-
-plt.legend(loc=4)
-plt.xlabel('Partidas')
-plt.ylabel('Porcentaje Ganadas')
-#plt.title('$\epsilon$-greedy')
-plt.ylim((0.45, 1))
-fix_style('article')
-plt.savefig('Figuras/epsilonfirst.png')
-plt.show()
-
+for ep in epsilones:
+    for exp in exps:
+        for var in varias:
+            partidas_r, this_Q, this_R, this_Q_err, this_R_err = promedio(ep, 'Optimizacion', exp, var)
+            if exp=='a':
+                plt.plot(partidas_r, this_Q, alpha=0.7, label=r'$\alpha$: '+str(var))
+            elif exp=='g':
+                plt.plot(partidas_r, this_Q, alpha=0.7, label=r'$\gamma$: '+str(var))
+            
+            plt.fill_between(partidas_r, this_Q+this_Q_err, this_Q-this_Q_err, color='0.6', alpha=0.75)
+        
+        plt.legend(loc=2)
+        plt.xlabel('Partidas')
+        plt.ylabel('Porcentaje Ganadas')
+        #plt.title('$\epsilon$-greedy')
+        plt.ylim((0.45, 1))
+        fix_style('article')
+        plt.savefig('Figuras/Optimizacion_e'+str(ep)+'_'+exp+str(int(var*10))+'.png')
+        plt.show()

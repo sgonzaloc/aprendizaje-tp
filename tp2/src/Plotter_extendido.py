@@ -1,10 +1,9 @@
 # -*- coding: utf-8 -*-
 """
-Created on Tue Nov 22 14:58:19 2016
+Created on Fri Nov 11 17:06:31 2016
 
 @author: Agus
 """
-
 
 import os
 import numpy as np
@@ -17,10 +16,10 @@ set_style('article')
 #%%
 
 def listar_archivos():
-    return os.listdir('Resultados_QvsQ/')
+    return os.listdir('Resultados_extendido/')
 
 def cargar_partidas(fileName):
-    datos = np.loadtxt('Resultados_QvsQ/'+fileName)
+    datos = np.loadtxt('Resultados_extendido/'+fileName)
     partidas = datos[:, 0]
     Qganadas = datos[:, 1]
     Rganadas = datos[:, 2]
@@ -40,13 +39,13 @@ def ratio(partidas, Qganadas, Rganadas, bineado):
 
 def promedio(tipo, var):
     if not isinstance(var, str):
-        var = str(var)
+        var = str(int(10*var))
     
-    ns = range(6)
+    ns = range(6, 8)
     Qs = []
     Rs = []
     for n in ns:
-        file = FileDictionary[(tipo, str(n))]
+        file = FileDictionary[(tipo, var, str(n))]
         partidas, Qganadas, Rganadas = cargar_partidas(file)
         partidas_r, Q_r, R_r = ratio(partidas, Qganadas, Rganadas, 500)
         Qs.append(Q_r)
@@ -68,23 +67,21 @@ FileDictionary = {}
 for file in Files:
     file_parts = file.split('_')
     tipo = file_parts[0]
-    n_usado = file_parts[1].split('.')[0][1:]
-    FileDictionary[(tipo, n_usado)] = file
+    var = file_parts[1].split('.')[0][1:]
+    n_usado = file_parts[2].split('.')[0][1:]
+    FileDictionary[(tipo, var, n_usado)] = file
 
-#%% Gráfico de QvsQ
-partidas_r, this_Q, this_R, this_Q_err, this_R_err = promedio('QvsQ', np.nan)
-plt.plot(partidas_r, this_Q, alpha=0.7, label='Player 1')
-plt.plot(partidas_r, this_R, alpha=0.7, label='Player 2')
+#%% Grafico para epsilon greedy
+partidas_r, this_Q, this_R, this_Q_err, this_R_err = promedio('Optimizacion', 0)
+plt.plot(partidas_r, this_Q, alpha=0.7)
 
 plt.fill_between(partidas_r, this_Q+this_Q_err, this_Q-this_Q_err, color='0.6', alpha=0.75)
-plt.fill_between(partidas_r, this_R+this_R_err, this_R-this_R_err, color='0.6', alpha=0.75)
 
 plt.legend(loc=2)
 plt.xlabel('Partidas')
 plt.ylabel('Porcentaje Ganadas')
 #plt.title('$\epsilon$-greedy')
-plt.ylim((0.2, 0.8))
+plt.ylim((0.45, 1))
 fix_style('article')
-plt.savefig('Figuras/QvsQ.png')
+plt.savefig('Figuras/BarridoEpsilonExtendida.png')
 plt.show()
-
