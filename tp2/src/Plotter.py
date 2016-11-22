@@ -52,8 +52,11 @@ def promedio(tipo, var):
         Rs.append(R_r)
     
     Q = np.mean(Qs, axis=0)
+    denom = np.sqrt(len(Qs))
+    Q_err = np.std(Qs, axis=0)/denom
     R = np.mean(Rs, axis=0)
-    return partidas_r, Q, R
+    R_err = np.std(Rs, axis=0)/denom
+    return partidas_r, Q, R, Q_err, R_err
 
 #%%
 
@@ -69,7 +72,7 @@ for file in Files:
     FileDictionary[(tipo, var, n_usado)] = file
 
 #%% Contraste entre graficar ratio, diferencia o totales
-
+""" Pruebas de como se ven mejor
 partidas, Qganadas, Rganadas = cargar_partidas(Files[12])
 
 partidas_r, Q_r, R_r = ratio(partidas, Qganadas, Rganadas, 500)
@@ -120,17 +123,39 @@ plt.show()
 plt.plot(partidas_r, Q)
 plt.title('Promedio de los ratios')
 plt.show()
-
-#%%
+"""
+#%% Grafico para epsilon greedy
 epsilons = np.arange(0, 1.1, 0.2)
 
 for eps in epsilons:
-    partidas_r, this_Q, this_R = promedio('Optimizacion', eps)
+    partidas_r, this_Q, this_R, this_Q_err, this_R_err = promedio('Optimizacion', eps)
     plt.plot(partidas_r, this_Q, alpha=0.7, label='$\epsilon$ = '+str(eps))
+    
+    plt.fill_between(partidas_r, this_Q+this_Q_err, this_Q-this_Q_err, color='0.6', alpha=0.75)
 
-plt.legend(loc=2)
-plt.title('Barrido en $\epsilon$-greedy')
+plt.legend(loc=1)
+plt.xlabel('Partidas')
+plt.ylabel('Porcentaje Ganadas')
+#plt.title('$\epsilon$-greedy')
 plt.ylim((0.45, 1))
 fix_style('article')
 plt.savefig('Figuras/BarridoEpsilon.png')
+plt.show()
+
+#%% Grafico de Q vs random con default
+
+partidas_r, this_Q, this_R, this_Q_err, this_R_err = promedio('Optimizacion', 0.2)
+plt.plot(partidas_r, this_Q, 'r',  alpha=0.7, label='Q Learner')
+plt.plot(partidas_r, this_R, 'b', alpha=0.7, label='Random')
+
+plt.fill_between(partidas_r, this_Q+this_Q_err, this_Q-this_Q_err, color='0.6', alpha=0.75)
+plt.fill_between(partidas_r, this_R+this_R_err, this_R-this_R_err, color='0.6', alpha=0.75)
+
+plt.legend(loc=1)
+plt.xlabel('Partidas')
+plt.ylabel('Porcentaje Ganadas')
+#plt.title('Desempeño del Q Learner')
+plt.ylim((0, 1))
+fix_style('article')
+plt.savefig('Figuras/DesempeñoDefault.png')
 plt.show()
